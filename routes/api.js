@@ -16,10 +16,6 @@ app.set('superSecret',config.secret);
 
 
 
-
-
-
-
 /*Admin sign up page. */
 router.post('/addtask', function(req, res, next) {
 	 var userinfo = new Task({
@@ -31,7 +27,7 @@ router.post('/addtask', function(req, res, next) {
 	 	//saved
 	 	if(Asignup) {
 			
-			res.send({"message":"success"});
+			res.send({userinfo});
 		}	
 	 })
 	});
