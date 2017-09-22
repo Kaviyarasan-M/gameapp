@@ -10,7 +10,7 @@ module.exports = mongoose.model('Task', new Schema({
 		ref : 'Task'
     },
      task_no: {
-     	type: Number,
+     	type: String,
      	unique: true
      },
      task_name:String,
