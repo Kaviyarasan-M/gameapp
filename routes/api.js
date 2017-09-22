@@ -24,8 +24,7 @@ router.post('/addtask', function(req, res, next) {
 	 	main_cat: req.body.main_cat,
 	 	sub_cat: req.body.sub_cat,
 	 	desc: req.body.desc,
-	 	tagline: req.body.tagline,
-	 	points: req.body.points
+	 	tagline: req.body.tagline
 	 });
 	 userinfo.save(function (err,Asignup) {
 	 	if (err) return JSON.stringify(err);
