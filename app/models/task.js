@@ -18,8 +18,8 @@ module.exports = mongoose.model('Task', new Schema({
      sub_cat: String,
      desc:String,
      tagline: String,
-     points: String
-   
+     points: String,
+     posted_on: String
 }));
 
 
