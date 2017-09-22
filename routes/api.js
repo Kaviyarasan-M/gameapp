@@ -25,7 +25,8 @@ router.post('/addtask', function(req, res, next) {
 	 	sub_cat: req.body.sub_cat,
 	 	desc: req.body.desc,
 	 	tagline: req.body.tagline,
-	 	status: req.body.status
+	 	points: req.body.points,
+	 	posted_on: req.body.posted_on
 	 });
 	 userinfo.save(function (err,Asignup) {
 	 	if (err) return JSON.stringify(err);
@@ -50,7 +51,7 @@ router.post('/userdetails',function(req, res, next){
 	users.save(function (err,users) {
 		if (err) return JSON.stringify(err);
 	 	//saved
-	 	if(fav) {
+	 	if(users) {
 	 		res.send({users});		
 		}	
 	})
@@ -76,6 +77,56 @@ router.post('/taskdetails', function (req, res){
 		});   
 		    
 	})
+
+
+/*Accepted Task*/
+router.post('/taskacceptence',function(req,res,next){	
+	User.findOneAndUpdate(
+	{"_id":req.body.user_id},		
+	{
+	$push:{"accepted_task":{
+	"task_id":req.body.task_id
+	}}},		
+	{
+		safe: true, 
+		upsert: true, new : true
+	},        
+	function(err, model) { 
+	if (err) return JSON.stringify(err);
+	if(model) {
+
+			res.send({"message": model});
+		}	           
+		        
+	}	
+)})
+
+
+
+
+/*Completed Task*/
+router.post('/taskcompleted',function(req,res,next){	
+	User.findOneAndUpdate(
+	{"_id":req.body.user_id},		
+	{
+	$push:{"completed_task":{
+	"task_id":req.body.task_id
+	}}},		
+	{
+		safe: true, 
+		upsert: true, new : true
+	},        
+	function(err, model) { 
+	if (err) return JSON.stringify(err);
+	if(model) {
+
+			res.send({"message": model});
+		}	           
+		        
+	}	
+)})
+
+
 
 
 
