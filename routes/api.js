@@ -16,16 +16,16 @@ app.set('superSecret',config.secret);
 
 
 
-/*Admin sign up page. */
+/*Add task api */
 router.post('/addtask', function(req, res, next) {
 	 var userinfo = new Task({
 	 	task_no: req.body.task_no,
-	 	task_name: req.body.task_name,
-	 	task_maincat: req.body.task_maincat,
-	 	task_subcat: req.body.task_subcat,
-	 	task_desc: req.body.task_desc,
-	 	task_tag: req.body.task_tag,
-	 	task_status: req.body.task_status
+	 	name: req.body.name,
+	 	main_cat: req.body.main_cat,
+	 	sub_cat: req.body.sub_cat,
+	 	desc: req.body.desc,
+	 	tagline: req.body.tagline,
+	 	status: req.body.status
 	 });
 	 userinfo.save(function (err,Asignup) {
 	 	if (err) return JSON.stringify(err);
@@ -62,8 +62,17 @@ router.post('/userdetails',function(req, res, next){
 
 /* Task list*/
 router.get('/tasklist', function (req, res){ 
-	Task.find({}, function(err, tasks) {    
+	Task.find({},['task_no','name'], function(err, tasks) {    
 		 res.send({tasks});
+		});   
+		    
+	})
+
+
+/* Task details */
+router.post('/taskdetails', function (req, res){ 
+	Task.findOne({"_id":req.body.task_id}, function(err, users) {    
+		 res.send({success:users});
 		});   
 		    
 	})

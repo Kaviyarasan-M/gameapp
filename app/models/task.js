@@ -13,12 +13,12 @@ module.exports = mongoose.model('Task', new Schema({
      	type: String,
      	unique: true
      },
-     task_name:String,
-     task_maincat: String,
-     task_subcat: String,
-     task_desc:String,
-     task_tag: String,
-     task_status: {
+     name:String,
+     main_cat: String,
+     sub_cat: String,
+     desc:String,
+     tag: String,
+     status: {
      type:Boolean,
      default: false
   }
