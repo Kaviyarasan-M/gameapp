@@ -15,13 +15,15 @@ module.exports = mongoose.model('User', new Schema({
      },
      accepted_task:[
      {
-      task_id: String
+      task_id: String,
+      unique: true
      }
 
      ],
      completed_task:[
      {
-     	task_id: String
+     	task_id: String,
+     	unique: true
 
      }
 	]

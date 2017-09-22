@@ -45,7 +45,6 @@ router.post('/addtask', function(req, res, next) {
 /*Insta Users*/
 router.post('/userdetails',function(req, res, next){
 	var users = new User({
-		user_id: req.body.user_id,
 		user_name: req.body.user_name
 	});
 	users.save(function (err,users) {
