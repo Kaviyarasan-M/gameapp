@@ -12,7 +12,6 @@ module.exports = mongoose.model('Task', new Schema({
      task_no: {
      	type: Number,
      	unique: true
-
      },
      task_name:String,
      task_maincat: String,

@@ -54,7 +54,7 @@ router.post('/userdetails',function(req, res, next){
 	 		res.send({users});		
 		}	
 	})
-})
+});
 
 
 
@@ -66,9 +66,10 @@ router.get('/tasklist', function (req, res){
 		res.render('/tasklist',{fav:fav},function(err,favlist){
 		res.send({fav});  
 	
-	});   
-})
+		});   
+	})
 
+});
 
 
 
