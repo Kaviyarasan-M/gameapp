@@ -19,7 +19,7 @@ app.set('superSecret',config.secret);
 /*Admin sign up page. */
 router.post('/addtask', function(req, res, next) {
 	 var userinfo = new Task({
-	 	task_no: req.body.task_id,
+	 	task_no: req.body.task_no,
 	 	task_name: req.body.task_name,
 	 	task_maincat: req.body.task_maincat,
 	 	task_subcat: req.body.task_subcat,
