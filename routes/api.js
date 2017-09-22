@@ -19,8 +19,13 @@ app.set('superSecret',config.secret);
 /*Admin sign up page. */
 router.post('/addtask', function(req, res, next) {
 	 var userinfo = new Task({
-	 	task_id: req.body.task_id,
-	 	task_name: req.body.task_name
+	 	task_no: req.body.task_id,
+	 	task_name: req.body.task_name,
+	 	task_maincat: req.body.task_maincat,
+	 	task_subcat: req.body.task_subcat,
+	 	task_desc: req.body.task_desc,
+	 	task_tag: req.body.task_tag,
+	 	task_status: req.body.task_status
 	 });
 	 userinfo.save(function (err,Asignup) {
 	 	if (err) return JSON.stringify(err);
@@ -30,9 +35,7 @@ router.post('/addtask', function(req, res, next) {
 			res.send({userinfo});
 		}	
 	 })
-	});
-
-
+});
 
 
 
@@ -52,6 +55,20 @@ router.post('/userdetails',function(req, res, next){
 		}	
 	})
 })
+
+
+
+
+
+/* Task list*/
+router.get('/tasklist', function (req, res){ 
+	Task.find({}, function(err, users) {  
+		res.render('/tasklist',{fav:fav},function(err,favlist){
+		res.send({fav});  
+	
+	});   
+})
+
 
 
 
