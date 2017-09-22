@@ -61,15 +61,13 @@ router.post('/userdetails',function(req, res, next){
 
 
 /* Task list*/
-router.get('/tasklist', function (req, res){ 
-	Task.find({}, function(err, users) {  
-		res.render('/tasklist',{fav:fav},function(err,favlist){
-		res.send({fav});  
-	
+router.get('/tasklsit', function (req, res){ 
+	Task.find({}, function(err, tasks) {    
+		 res.send({tasks});
 		});   
+		    
 	})
 
-});
 
 
 
