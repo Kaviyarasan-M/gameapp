@@ -150,8 +150,8 @@ router.post('/taskcompleted',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
-		User.update({'accepted_task.task_id': model.task_id  }, 
-                {$pull: { 'accepted_task.task_id': model.task_id }}, 
+		User.update({"_id": model.user_id  }, 
+                {$pull: { "accepted_task":{"task_id": model.task_id}}}, 
                 function (err,val) {
                    res.send({status: "true", model});
                 });
