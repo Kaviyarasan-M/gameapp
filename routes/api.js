@@ -61,8 +61,15 @@ router.post('/userdetails',function(req, res, next){
 
 /* Task list*/
 router.get('/group_tasklist', function (req, res){ 
-	Task.find({"cat":"Group"},['task_no','name'], function(err, tasks) {    
-		 res.send({tasks});
+	Task.find({"cat":"Group"},['task_no','name'], function(err, tasks) {  
+	if(tasks){
+		 res.send({status: "true", tasks});
+
+	} else {
+		 res.send({status: "false"});
+
+	}
+	
 		});   
 		    
 	})
