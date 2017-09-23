@@ -21,8 +21,7 @@ router.post('/addtask', function(req, res, next) {
 	 var userinfo = new Task({
 	 	task_no: req.body.task_no,
 	 	name: req.body.name,
-	 	main_cat: req.body.main_cat,
-	 	sub_cat: req.body.sub_cat,
+	 	cat: req.body.cat,
 	 	desc: req.body.desc,
 	 	tagline: req.body.tagline,
 	 	points: req.body.points,
@@ -61,8 +60,16 @@ router.post('/userdetails',function(req, res, next){
 
 
 /* Task list*/
-router.get('/tasklist', function (req, res){ 
-	Task.find({},['task_no','name'], function(err, tasks) {    
+router.get('/group_tasklist', function (req, res){ 
+	Task.find({"cat":"Group"},['task_no','name'], function(err, tasks) {    
+		 res.send({tasks});
+		});   
+		    
+	})
+
+/* Task list*/
+router.get('/individual_tasklist', function (req, res){ 
+	Task.find({"cat":"Individual"},['task_no','name'], function(err, tasks) {    
 		 res.send({tasks});
 		});   
 		    
@@ -84,7 +91,12 @@ router.post('/taskacceptence',function(req,res,next){
 	{"_id":req.body.user_id},		
 	{
 	$push:{"accepted_task":{
-	"task_id":req.body.task_id
+	"task_id":req.body.task_id,
+	"name":req.body.name,
+	"desc":req.body.desc,
+	"tagline":req.body.tagline,
+	"points":req.body.points
+
 	}}},		
 	{
 		safe: true, 
@@ -124,12 +136,6 @@ router.post('/taskcompleted',function(req,res,next){
 		        
 	}	
 )})
-
-
-
-
-
-
 
 
 

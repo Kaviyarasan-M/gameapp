@@ -15,21 +15,22 @@ module.exports = mongoose.model('User', new Schema({
      },
      accepted_task:[
      {
-      task_id:{
-      	type: String,
-      	unique: true
-      }
+      task_id: String,
+      name: String,
+      desc: String,
+      tagline: String,
+      points: String
      }
 
      ],
      completed_task:[
      {
-     	task_id:{
-      	type: String,
-      	unique: true
+     	task_id: String,
+     	name: String,
+     	desc: String,
+        tagline: String,
+        points: String
       }
-
-     }
 	]
 }));
 
