@@ -76,8 +76,14 @@ router.get('/group_tasklist', function (req, res){
 
 /* Task list*/
 router.get('/individual_tasklist', function (req, res){ 
-	Task.find({"cat":"Individual"},['task_no','name'], function(err, tasks) {    
-		 res.send({tasks});
+	Task.find({"cat":"Individual"},['task_no','name'], function(err, tasks) {   
+	if(tasks){
+		 res.send({status: "true", tasks});
+
+	} else {
+		 res.send({status: "false"});
+
+	}	 
 		});   
 		    
 	})
@@ -86,7 +92,13 @@ router.get('/individual_tasklist', function (req, res){
 /* Task details */
 router.post('/taskdetails', function (req, res){ 
 	Task.findOne({"_id":req.body.task_id}, function(err, users) {    
-		 res.send({success:users});
+	if(users){
+		 res.send({status: "true", users});
+
+	}else {
+		 res.send({status: "false"});
+
+	}
 		});   
 		    
 	})
@@ -110,11 +122,13 @@ router.post('/taskacceptence',function(req,res,next){
 		upsert: true, new : true
 	},        
 	function(err, model) { 
-	if (err) return JSON.stringify(err);
-	if(model) {
+	if(model){
+		 res.send({status: "true", model});
 
-			res.send({"message": model});
-		}	           
+	} else {
+		 res.send({status: "false"});
+
+	}	           
 		        
 	}	
 )})
@@ -135,11 +149,18 @@ router.post('/taskcompleted',function(req,res,next){
 		upsert: true, new : true
 	},        
 	function(err, model) { 
-	if (err) return JSON.stringify(err);
-	if(model) {
+	if(model){
+		User.update({'accepted_task.task_id': model.task_id  }, 
+                {$pull: { 'accepted_task.task_id': model.task_id }}, 
+                function (err,val) {
+                   res.send({status: "true", model});
+                });
+		
 
-			res.send({"message": model});
-		}	           
+	} else {
+		 res.send({status: "false"});
+
+	}	           
 		        
 	}	
 )})
