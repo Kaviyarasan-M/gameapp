@@ -141,7 +141,7 @@ router.post('/taskcompleted',function(req,res,next){
 	User.findOneAndUpdate(
 	{"_id":req.body.user_id},		
 	{
-	$pull:{"completed_task":{
+	$push:{"completed_task":{
 	"task_id":req.body.task_id
 	}}},		
 	{
@@ -150,7 +150,34 @@ router.post('/taskcompleted',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
+
+
+	User.findOneAndUpdate(
+	{"_id":model.user_id},		
+	{
+	$pull:{"accepted_task":{
+	"task_id":model.task_id
+	}}},		
+	{
+		safe: true, 
+		upsert: true, new : true
+	},        
+	function(err, pull) { 
+	if(model){
+
+		
 		 res.send({status: "true", model});
+
+	} else {
+		 res.send({status: "false"});
+
+	}	           
+		        
+	}	
+)
+
+
+		// res.send({status: "true", model});
 
 	} else {
 		 res.send({status: "false"});
