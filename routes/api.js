@@ -157,6 +157,7 @@ router.post('/taskacceptence',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
+
 		 res.send({status: "true", message: "success"});
 
 	} else {
@@ -191,7 +192,21 @@ router.post('/taskcompleted',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
-		 res.send({status: "true", message: "success"});
+				User.findOneAndUpdate(
+				{"_id":req.model._id},		
+				{
+				$push:{"accepted_task":{
+				"task_id":model.task_id
+
+				}}},		
+				{
+					safe: true, 
+					upsert: true, new : true
+		 },function (err, mod){
+		 	 res.send({status: "true", message: "success"});
+		 	})
+
+		
 
 	} else {
 		 res.send({status: "true", message: "failure"});
