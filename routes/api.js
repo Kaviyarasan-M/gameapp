@@ -236,22 +236,19 @@ router.post('/user_info', function (req, res){
 
 /* User details */
 router.post('/test', function (req, res){ 
-	User.findOne({"_id":req.body.user_id}, function(err, userinfo) {    
-	if(userinfo){
-	
-			User.findOneAndUpdate({"_id":userinfo._id},
-				{ $pull:{"accepted_task":{"task_id":req.body.task_id}}},{new:true}, function(err,user){
-				
-			})	
+	User.findOneAndUpdate(
+				{"_id":req.body.user_id},		
+				{
+				$pull:{"accepted_task":{
+				"task_id":req.body.task_id
 
-
-		 res.send({status: "true", userinfo});
-
-	}else{
-		 res.send({status: "true", message: "failure"});
-
-	}
-	});   
+				}}},		
+				{
+					safe: true, 
+					upsert: true, new : true
+		 },function (err, mod){
+		 	 res.send({status: "true", message: "success", mod});
+		 	})  
 		    
 	})
 
