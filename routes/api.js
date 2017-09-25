@@ -42,7 +42,7 @@ router.post('/addtask', function(req, res, next) {
 
 
 /*Insta Users*/
-router.post('/userdetails',function(req, res, next){
+router.post('/register',function(req, res, next){
 	var user = new User({
 		user_name: req.body.user_name
 	});
@@ -158,20 +158,6 @@ router.post('/taskcompleted',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
-		User.findOneAndUpdate(
-	      {
-	      	"_id":model.user_id},		
-	      {
-			$push:{"accepted_task":{
-			"task_id":model.task_id
-	}}},
-			
-	{
-		safe: true, 
-		upsert: true, new : true
-	})
-
-
 		 res.send({status: "true", model});
 
 	} else {
@@ -183,6 +169,21 @@ router.post('/taskcompleted',function(req,res,next){
 )})
 
 
+
+
+/* User details */
+router.post('/user_details', function (req, res){ 
+	User.findOne({"_id":req.body.user_id}, function(err, userinfo) {    
+	if(userinfo){
+		 res.send({status: "true", userinfo});
+
+	}else{
+		 res.send({status: "false"});
+
+	}
+	});   
+		    
+	})
 
 
 
