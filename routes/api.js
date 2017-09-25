@@ -18,7 +18,7 @@ app.set('superSecret',config.secret);
 
 /*Add task api */
 router.post('/addtask', function(req, res, next) {
-	 var userinfo = new Task({
+	 var task = new Task({
 	 	task_no: req.body.task_no,
 	 	name: req.body.name,
 	 	category: req.body.category,
@@ -27,12 +27,12 @@ router.post('/addtask', function(req, res, next) {
 	 	points: req.body.points,
 	 	posted_on: req.body.posted_on
 	 });
-	 userinfo.save(function (err,Asignup) {
+	 task.save(function (err,Asignup) {
 	 	if (err) return JSON.stringify(err);
 	 	//saved
 	 	if(Asignup) {
 			
-			res.send({userinfo});
+			res.send({status: "true", task});
 		}	
 	 })
 });
@@ -43,14 +43,14 @@ router.post('/addtask', function(req, res, next) {
 
 /*Insta Users*/
 router.post('/userdetails',function(req, res, next){
-	var users = new User({
+	var user = new User({
 		user_name: req.body.user_name
 	});
-	users.save(function (err,users) {
+	user.save(function (err,user) {
 		if (err) return JSON.stringify(err);
 	 	//saved
-	 	if(users) {
-	 		res.send({users});		
+	 	if(user) {
+	 		res.send({status: "true", user});		
 		}	
 	})
 });
@@ -61,7 +61,7 @@ router.post('/userdetails',function(req, res, next){
 
 /* Task list*/
 router.get('/group_tasklist', function (req, res){ 
-	Task.find({"cat":"Group"},['task_no','name'], function(err, tasks) {  
+	Task.find({"category":"Group"},['task_no','name'], function(err, tasks) {  
 	if(tasks){
 		 res.send({status: "true", tasks});
 
@@ -76,7 +76,7 @@ router.get('/group_tasklist', function (req, res){
 
 /* Task list*/
 router.get('/individual_tasklist', function (req, res){ 
-	Task.find({"cat":"Individual"},['task_no','name'], function(err, tasks) {   
+	Task.find({"category":"Individual"},['task_no','name'], function(err, tasks) {   
 	if(tasks){
 		 res.send({status: "true", tasks});
 
