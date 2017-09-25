@@ -22,7 +22,7 @@ router.post('/addtask', function(req, res, next) {
 	 	task_no: req.body.task_no,
 	 	name: req.body.name,
 	 	category: req.body.category,
-	 	desc: req.body.desc,
+	 	description: req.body.description,
 	 	tagline: req.body.tagline,
 	 	points: req.body.points,
 	 	posted_on: req.body.posted_on
@@ -91,9 +91,9 @@ router.get('/individual_tasklist', function (req, res){
 
 /* Task details */
 router.post('/taskdetails', function (req, res){ 
-	Task.findOne({"_id":req.body.task_id}, function(err, tasks) {    
-	if(tasks){
-		 res.send({status: "true", tasks});
+	Task.findOne({"_id":req.body.task_id}, function(err, task) {    
+	if(task){
+		 res.send({status: "true", task});
 
 	}else {
 		 res.send({status: "false"});
@@ -113,7 +113,7 @@ router.post('/taskacceptence',function(req,res,next){
 	"task_id":req.body.task_id,
 	"name":req.body.name,
 	"category":req.body.category,
-	"desc":req.body.desc,
+	"description":req.body.description,
 	"tagline":req.body.tagline,
 	"points":req.body.points
 
@@ -146,7 +146,7 @@ router.post('/taskcompleted',function(req,res,next){
 	"task_id":req.body.task_id,
 	"name":req.body.name,
 	"category":req.body.category,
-	"desc":req.body.desc,
+	"description":req.body.description,
 	"tagline":req.body.tagline,
 	"points":req.body.points
 	}}},		
