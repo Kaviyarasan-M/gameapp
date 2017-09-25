@@ -50,7 +50,7 @@ router.post('/login',function(req, res, next){
 		if (err) return JSON.stringify(err);
 	 	//saved
 	 	if(user) {
-	 		res.send({status: "true", message: "success"});		
+	 		res.send({status: "true", user});		
 		}else{
 			res.send({status: "true", message: "failure"});		
 		}
