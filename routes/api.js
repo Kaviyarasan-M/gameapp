@@ -149,32 +149,9 @@ router.post('/taskcompleted',function(req,res,next){
 	"description":req.body.description,
 	"tagline":req.body.tagline,
 	"points":req.body.points
-	}}},		
+	}}},
 	{
-		safe: true, 
-		upsert: true, new : true
-	},        
-	function(err, model) { 
-	if(model){
-
-
-		 res.send({status: "true", model});
-
-	} else {
-		 res.send({status: "false"});
-
-	}	           
-		        
-	}	
-)})
-
-
-/*Completed Task*/
-router.post('/taskcompletedd',function(req,res,next){	
-	User.findOneAndUpdate(
-	{"_id":req.body.user_id},		
-	{
-	$pull:{"completed_task":{
+	$pull:{"accepted_task":{
 	"task_id":req.body.task_id
 	}}},		
 	{
@@ -194,6 +171,9 @@ router.post('/taskcompletedd',function(req,res,next){
 		        
 	}	
 )})
+
+
+
 
 
 
