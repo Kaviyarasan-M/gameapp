@@ -54,8 +54,8 @@ router.post('/login',function(req, res, next){
 	 		        var token = jwt.sign(user, app.get('superSecret'), {				
 		 	        expiresIn: 86400 // expires in 24 hours //basically in seconds			
 		         });
-			   // res.send({"token":token});
-	 		    res.send({status: "true","token": token, user});		
+			// res.send({"token":token});
+	 		res.send({status: "true", user});		
 		}else{
 			res.send({status: "true", message: "failure"});		
 		}
@@ -64,7 +64,7 @@ router.post('/login',function(req, res, next){
 
 
 // ---------------------------------------------------------// route middleware to authenticate and check token// ---------------------------------------------------------
-router.use(function(req, res, next) {	
+/*router.use(function(req, res, next) {	
 // check header or url parameters or post parameters for token
 	var token = req.body.token || req.param('token') || req.headers['token'];	
 	// decode token
@@ -88,7 +88,7 @@ router.use(function(req, res, next) {
 		});
 	}
 });
-
+*/
 // ---------------------------------------------------------
 // authenticated routes
 // ---------------------------------------------------------
