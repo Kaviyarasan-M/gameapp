@@ -42,7 +42,7 @@ router.post('/addtask', function(req, res, next) {
 
 
 /*Insta Users*/
-router.post('/register',function(req, res, next){
+router.post('/login',function(req, res, next){
 	var user = new User({
 		user_name: req.body.user_name
 	});
@@ -50,8 +50,10 @@ router.post('/register',function(req, res, next){
 		if (err) return JSON.stringify(err);
 	 	//saved
 	 	if(user) {
-	 		res.send({status: "true", user});		
-		}	
+	 		res.send({status: "true", message: "success"});		
+		}else{
+			res.send({status: "false", message: "failure"});		
+		}
 	})
 });
 
@@ -63,12 +65,11 @@ router.post('/register',function(req, res, next){
 router.get('/group_tasklist', function (req, res){ 
 	Task.find({"category":"Group"},['task_no','name'], function(err, tasks) {  
 	if(tasks){
-		 res.send({status: "true", tasks});
+		 res.send({status: "true", message: "success"});
 
-	} else {
-		 res.send({status: "false"});
-
-	}
+	}else{
+			res.send({status: "false", message: "failure"});		
+		}
 	
 		});   
 		    
@@ -80,10 +81,9 @@ router.get('/individual_tasklist', function (req, res){
 	if(tasks){
 		 res.send({status: "true", tasks});
 
-	} else {
-		 res.send({status: "false"});
-
-	}	 
+	} else{
+			res.send({status: "false", message: "failure"});		
+		} 
 		});   
 		    
 	})
@@ -96,7 +96,7 @@ router.post('/taskdetails', function (req, res){
 		 res.send({status: "true", task});
 
 	}else {
-		 res.send({status: "false"});
+		 res.send({status: "false", message: "failure"});
 
 	}
 		});   
@@ -127,7 +127,7 @@ router.post('/taskacceptence',function(req,res,next){
 		 res.send({status: "true", message: "success"});
 
 	} else {
-		 res.send({status: "false"});
+		 res.send({status: "false", message: "failure"});
 
 	}	           
 		        
@@ -161,7 +161,7 @@ router.post('/taskcompleted',function(req,res,next){
 		 res.send({status: "true", message: "success"});
 
 	} else {
-		 res.send({status: "false"});
+		 res.send({status: "false", message: "failure"});
 
 	}	           
 		        
@@ -178,7 +178,7 @@ router.post('/user_info', function (req, res){
 		 res.send({status: "true", userinfo});
 
 	}else{
-		 res.send({status: "false"});
+		 res.send({status: "false", message: "failure"});
 
 	}
 	});   
@@ -200,7 +200,7 @@ router.post('/test', function (req, res){
 		 res.send({status: "true", userinfo});
 
 	}else{
-		 res.send({status: "false"});
+		 res.send({status: "false", message: "failure"});
 
 	}
 	});   
