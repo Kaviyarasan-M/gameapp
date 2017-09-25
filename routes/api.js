@@ -192,10 +192,10 @@ router.post('/taskcompleted',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
-				User.findOneAndUpdate(
+		User.findOneAndUpdate(
 				{"_id":req.model._id},		
 				{
-				$push:{"accepted_task":{
+				$pull:{"accepted_task":{
 				"task_id":model.task_id
 
 				}}},		
