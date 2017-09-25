@@ -91,9 +91,9 @@ router.get('/individual_tasklist', function (req, res){
 
 /* Task details */
 router.post('/taskdetails', function (req, res){ 
-	Task.findOne({"_id":req.body.task_id}, function(err, users) {    
-	if(users){
-		 res.send({status: "true", users});
+	Task.findOne({"_id":req.body.task_id}, function(err, tasks) {    
+	if(tasks){
+		 res.send({status: "true", tasks});
 
 	}else {
 		 res.send({status: "false"});
@@ -142,7 +142,11 @@ router.post('/taskcompleted',function(req,res,next){
 	{"_id":req.body.user_id},		
 	{
 	$push:{"completed_task":{
-	"task_id":req.body.task_id
+	"task_id":req.body.task_id,
+	"name":req.body.name,
+	"desc":req.body.desc,
+	"tagline":req.body.tagline,
+	"points":req.body.points
 	}}},		
 	{
 		safe: true, 
@@ -152,32 +156,7 @@ router.post('/taskcompleted',function(req,res,next){
 	if(model){
 
 
-	User.findOneAndUpdate(
-	{"_id":model.user_id},		
-	{
-	$pull:{"accepted_task":{
-	"task_id":model.task_id
-	}}},		
-	{
-		safe: true, 
-		upsert: true, new : true
-	},        
-	function(err, pull) { 
-	if(model){
-
-		
 		 res.send({status: "true", model});
-
-	} else {
-		 res.send({status: "false"});
-
-	}	           
-		        
-	}	
-)
-
-
-		// res.send({status: "true", model});
 
 	} else {
 		 res.send({status: "false"});
