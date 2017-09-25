@@ -14,7 +14,7 @@ module.exports = mongoose.model('Task', new Schema({
      	unique: true
      },
      name:String,
-     cat: String,
+     category: String,
      //sub_cat: String,
      desc:String,
      tagline: String,

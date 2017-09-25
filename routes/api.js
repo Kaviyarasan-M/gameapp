@@ -21,7 +21,7 @@ router.post('/addtask', function(req, res, next) {
 	 var userinfo = new Task({
 	 	task_no: req.body.task_no,
 	 	name: req.body.name,
-	 	cat: req.body.cat,
+	 	category: req.body.category,
 	 	desc: req.body.desc,
 	 	tagline: req.body.tagline,
 	 	points: req.body.points,
@@ -112,6 +112,7 @@ router.post('/taskacceptence',function(req,res,next){
 	$push:{"accepted_task":{
 	"task_id":req.body.task_id,
 	"name":req.body.name,
+	"category":req.body.category,
 	"desc":req.body.desc,
 	"tagline":req.body.tagline,
 	"points":req.body.points
@@ -144,6 +145,7 @@ router.post('/taskcompleted',function(req,res,next){
 	$push:{"completed_task":{
 	"task_id":req.body.task_id,
 	"name":req.body.name,
+	"category":req.body.category,
 	"desc":req.body.desc,
 	"tagline":req.body.tagline,
 	"points":req.body.points
