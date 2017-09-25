@@ -162,7 +162,7 @@ router.post('/taskcompleted',function(req,res,next){
 	      {
 	      	"_id":model.user_id},		
 	      {
-			$push:{"completed_task":{
+			$push:{"accepted_task":{
 			"task_id":model.task_id
 	}}},
 			
