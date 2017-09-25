@@ -150,16 +150,26 @@ router.post('/taskcompleted',function(req,res,next){
 	"tagline":req.body.tagline,
 	"points":req.body.points
 	}}},
-	{
-	$pull:{"accepted_task":{
-	"task_id":req.body.task_id
-	}}},		
+			
 	{
 		safe: true, 
 		upsert: true, new : true
 	},        
 	function(err, model) { 
 	if(model){
+
+		User.findOneAndUpdate(
+	      {
+	      	"_id":model.user_id},		
+	      {
+			$push:{"completed_task":{
+			"task_id":model.task_id
+	}}},
+			
+	{
+		safe: true, 
+		upsert: true, new : true
+	})
 
 
 		 res.send({status: "true", model});
