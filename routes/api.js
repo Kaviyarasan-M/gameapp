@@ -203,7 +203,7 @@ router.post('/taskcompleted',function(req,res,next){
 					safe: true, 
 					upsert: true, new : true
 		 },function (err, mod){
-		 	 res.send({status: "true", message: "success", model});
+		 	 res.send({status: "true", message: "success"});
 		 	})
 
 		
