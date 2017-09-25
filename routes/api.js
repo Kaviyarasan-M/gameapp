@@ -124,7 +124,7 @@ router.post('/taskacceptence',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
-		 res.send({status: "true", model});
+		 res.send({status: "true", message: "success"});
 
 	} else {
 		 res.send({status: "false"});
@@ -158,7 +158,7 @@ router.post('/taskcompleted',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
-		 res.send({status: "true", model});
+		 res.send({status: "true", message: "success"});
 
 	} else {
 		 res.send({status: "false"});
@@ -191,7 +191,8 @@ router.post('/test', function (req, res){
 	User.findOne({"_id":req.body.user_id}, function(err, userinfo) {    
 	if(userinfo){
 	
-			User.findOneAndUpdate({"_id":userinfo._id},{ $pull:{"accepted_task":{"task_id":req.body.task_id}}},{new:true}, function(err,user){
+			User.findOneAndUpdate({"_id":userinfo._id},
+				{ $pull:{"accepted_task":{"task_id":req.body.task_id}}},{new:true}, function(err,user){
 				
 			})	
 
