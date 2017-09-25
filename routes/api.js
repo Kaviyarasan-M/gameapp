@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
 var config = require('../config/database');
 var User = require('../app/models/user');
 var Task = require('../app/models/task');
@@ -53,8 +54,8 @@ router.post('/login',function(req, res, next){
 	 		        var token = jwt.sign(user, app.get('superSecret'), {				
 		 	        expiresIn: 86400 // expires in 24 hours //basically in seconds			
 		         });
-			    res.send({"token":token});
-	 		    //res.send({status: "true","token": token, user});		
+			   // res.send({"token":token});
+	 		    res.send({status: "true","token": token, user});		
 		}else{
 			res.send({status: "true", message: "failure"});		
 		}
