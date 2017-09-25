@@ -52,7 +52,7 @@ router.post('/login',function(req, res, next){
 	 	if(user) {
 	 		res.send({status: "true", message: "success"});		
 		}else{
-			res.send({status: "false", message: "failure"});		
+			res.send({status: "true", message: "failure"});		
 		}
 	})
 });
@@ -65,10 +65,10 @@ router.post('/login',function(req, res, next){
 router.get('/group_tasklist', function (req, res){ 
 	Task.find({"category":"Group"},['task_no','name'], function(err, tasks) {  
 	if(tasks){
-		 res.send({status: "true", message: "success"});
+		 res.send({status: "true", tasks});
 
 	}else{
-			res.send({status: "false", message: "failure"});		
+			res.send({status: "true", message: "failure"});		
 		}
 	
 		});   
@@ -82,7 +82,7 @@ router.get('/individual_tasklist', function (req, res){
 		 res.send({status: "true", tasks});
 
 	} else{
-			res.send({status: "false", message: "failure"});		
+			res.send({status: "true", message: "failure"});		
 		} 
 		});   
 		    
@@ -96,7 +96,7 @@ router.post('/taskdetails', function (req, res){
 		 res.send({status: "true", task});
 
 	}else {
-		 res.send({status: "false", message: "failure"});
+		 res.send({status: "true", message: "failure"});
 
 	}
 		});   
@@ -127,7 +127,7 @@ router.post('/taskacceptence',function(req,res,next){
 		 res.send({status: "true", message: "success"});
 
 	} else {
-		 res.send({status: "false", message: "failure"});
+		 res.send({status: "true", message: "failure"});
 
 	}	           
 		        
@@ -161,7 +161,7 @@ router.post('/taskcompleted',function(req,res,next){
 		 res.send({status: "true", message: "success"});
 
 	} else {
-		 res.send({status: "false", message: "failure"});
+		 res.send({status: "true", message: "failure"});
 
 	}	           
 		        
@@ -178,7 +178,7 @@ router.post('/user_info', function (req, res){
 		 res.send({status: "true", userinfo});
 
 	}else{
-		 res.send({status: "false", message: "failure"});
+		 res.send({status: "true", message: "failure"});
 
 	}
 	});   
@@ -200,7 +200,7 @@ router.post('/test', function (req, res){
 		 res.send({status: "true", userinfo});
 
 	}else{
-		 res.send({status: "false", message: "failure"});
+		 res.send({status: "true", message: "failure"});
 
 	}
 	});   
