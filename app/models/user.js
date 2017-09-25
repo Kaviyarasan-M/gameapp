@@ -17,7 +17,8 @@ module.exports = mongoose.model('User', new Schema({
      {
       task_id: String,
       name: String,
-      desc: String,
+      category: String,
+      description: String,
       tagline: String,
       points: String
      }
@@ -27,7 +28,8 @@ module.exports = mongoose.model('User', new Schema({
      {
      	task_id: String,
      	name: String,
-     	desc: String,
+     	category: String,
+     	description: String,
         tagline: String,
         points: String
       }
