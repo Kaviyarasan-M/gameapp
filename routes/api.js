@@ -174,7 +174,7 @@ router.post('/taskcompletedd',function(req,res,next){
 	User.findOneAndUpdate(
 	{"_id":req.body.user_id},		
 	{
-	$push:{"completed_task":{
+	$pull:{"completed_task":{
 	"task_id":req.body.task_id
 	}}},		
 	{
