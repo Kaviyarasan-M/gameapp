@@ -172,9 +172,30 @@ router.post('/taskcompleted',function(req,res,next){
 
 
 /* User details */
-router.post('/user_details', function (req, res){ 
+router.post('/user_info', function (req, res){ 
 	User.findOne({"_id":req.body.user_id}, function(err, userinfo) {    
 	if(userinfo){
+		 res.send({status: "true", userinfo});
+
+	}else{
+		 res.send({status: "false"});
+
+	}
+	});   
+		    
+	})
+
+
+/* User details */
+router.post('/test', function (req, res){ 
+	User.findOne({"_id":req.body.user_id}, function(err, userinfo) {    
+	if(userinfo){
+	
+			User.findOneAndUpdate({"_id":userinfo._id},{ $pull:{"accepted_task":{"task_id":req.body.task_id}}},{new:true}, function(err,user){
+				
+			})	
+
+
 		 res.send({status: "true", userinfo});
 
 	}else{
