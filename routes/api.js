@@ -96,7 +96,7 @@ router.post('/login',function(req, res, next){
 
 /* Task list*/
 router.get('/group_tasklist', function (req, res){ 
-	Task.find({"category":"Group"},['task_no','name'], function(err, tasks) {  
+	Task.find({"category":"Group"},['task_no','name','points'], function(err, tasks) {  
 	if(tasks){
 		 res.send({status: "true", tasks});
 
@@ -110,7 +110,7 @@ router.get('/group_tasklist', function (req, res){
 
 /* Task list*/
 router.get('/individual_tasklist', function (req, res){ 
-	Task.find({"category":"Individual"},['task_no','name'], function(err, tasks) {   
+	Task.find({"category":"Individual"},['task_no','name','points'], function(err, tasks) {   
 	if(tasks){
 		 res.send({status: "true", tasks});
 
@@ -193,10 +193,10 @@ router.post('/taskcompleted',function(req,res,next){
 	if(model){
 
 		User.findOneAndUpdate(
-				{"_id":model._id},		
+				{"_id":req.body.user_id},		
 				{
 				$pull:{"accepted_task":{
-				"task_id":model.task_id
+				"task_id":req.body.task_id
 
 				}}},		
 				{

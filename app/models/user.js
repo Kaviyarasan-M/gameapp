@@ -30,8 +30,8 @@ module.exports = mongoose.model('User', new Schema({
      	name: String,
      	category: String,
      	description: String,
-        tagline: String,
-        points: String
+      tagline: String,
+      points: String
       }
 	]
 }));
