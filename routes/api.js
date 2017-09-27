@@ -9,7 +9,7 @@ var config = require('../config/config');
 var app = express();
 var router = express.Router();
 
-var authUser = require('../app/services/authService');
+var authUser = require('../app/service/authService');
 
 
 
