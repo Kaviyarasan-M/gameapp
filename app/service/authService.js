@@ -37,13 +37,21 @@ module.exports = function (request, res) {
 
 			});
 
-
-			user.save(function (error,user) {
-				if (error) res.send({status: "true", message: "failure"});
-				//console.log(res)
-			     res.send({status: "true", user});
+			User.findOne({"user_name":r.user.username},function(err,signin){
+		        if(signin) {
+			                res.send(signin);
+		                   }else{
+			                     //res.send({"message":"failure"});
+			                     user.save(function (error,user) {
+								if (error) res.send({status: "true", message: "failure"});
+								//console.log(res)
+							     res.send({status: "true", user});
 
 			})
+		                   }	
+	         })
+
+			
 		}
 	});
 
