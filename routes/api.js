@@ -1,19 +1,33 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var jwt = require('jsonwebtoken');
-var config = require('../config/database');
 var User = require('../app/models/user');
 var Task = require('../app/models/task');
+var morgan = require('morgan');
+var config = require('../config/config');
 
 
 var app = express();
 var router = express.Router();
 
+var authUser = require('../app/services/authService');
 
 
-mongoose.connect(config.database);
-app.set('superSecret',config.secret);
 
+mongoose.connect(config.db.uri);
+
+
+
+router.get('/login', function (request, response) {
+	response.redirect(config.instagram.auth_url);
+});
+
+router.get('/auth', authUser);
+
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+ res.sendfile('./public/index.html');
+});
 
 
 
@@ -42,7 +56,7 @@ router.post('/addtask', function(req, res, next) {
 
 
 
-/*Insta Users*/
+/*
 router.post('/login',function(req, res, next){
 	var user = new User({
 		user_name: req.body.user_name,
@@ -62,7 +76,7 @@ router.post('/login',function(req, res, next){
 		}
 	})
 });
-
+*/
 
 // ---------------------------------------------------------// route middleware to authenticate and check token// ---------------------------------------------------------
 /*router.use(function(req, res, next) {	

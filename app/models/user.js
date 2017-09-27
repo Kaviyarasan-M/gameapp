@@ -5,15 +5,14 @@ var Schema = mongoose.Schema;
 //set up a mongoose model
 module.exports = mongoose.model('User', new Schema({
 
-     user_id:{
-     	type : Schema.Types.ObjectId,
-		  ref : 'User'
-     },
-     user_name:{
-     	type: String,
-     	unique: true
-     },
-     img: String, 
+      id:{ type: Number,
+        unique:true },
+      user_name: String,
+      full_name: String,
+      bio: String,
+      website: String,
+      profile_picture: String,
+      access_token: String,
      accepted_task:[
      {
       task_id: String,
