@@ -241,7 +241,7 @@ router.post('/taskcompleted',function(req,res,next){
 router.post('/user_info', function (req, res){ 
 	User.findOne({"user_name":req.body.user_name}, function(err, userinfo) {    
 	if(userinfo){
-		 res.send({status: "true", userinfo});
+		 res.send({userinfo});
 
 	}else{
 		 res.send({status: "true", message: "failure"});
