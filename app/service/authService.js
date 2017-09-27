@@ -37,11 +37,10 @@ module.exports = function (request, res) {
 
 			});
 
-			User.findOne({"user_name":r.user.username},function(new,user){
+			User.findOne({"user_name":r.user.username},function(err,user){
 		        if(user) {
 			                res.send({status: "true",user});
-		                   }
-		        if(new){
+		                   }else{
 			                     //res.send({"message":"failure"});
 			                     user.save(function (error,user) {
 								if (error) res.send({status: "true", message: "failure"});
