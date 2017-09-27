@@ -4,9 +4,9 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var mongoose = require('mongoose');
-var authUser = require('./app/services/authService');
-var config = require('./config/config');
+//var mongoose = require('mongoose');
+//var authUser = require('./app/services/authService');
+//var config = require('./config/config');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
