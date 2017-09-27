@@ -11,8 +11,8 @@
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "mongoose": "^4.11.13",
+     "jade": "~1.11.0",
     "morgan": "^1.8.2",
-    "pug": "~2.0.0-beta11",
     "request": "^2.83.0",
     "serve-favicon": "~2.4.2"
   }
