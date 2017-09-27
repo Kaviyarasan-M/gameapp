@@ -37,10 +37,9 @@ module.exports = function (request, res) {
 			
 
 			user.save(function (error,user) {
-				if (error) res.send(error);
+				if (error) res.send({status: "true", message: "failure"});
 				//console.log(res)
-				res.send(user);
-				//res.send({status: "true", user});
+			    res.send({status: "true", user});
 
 			})
 		}
