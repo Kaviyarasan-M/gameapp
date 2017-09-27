@@ -24,6 +24,9 @@ router.get('/login', function (request, response) {
 router.get('/auth', authUser);
 
 
+
+
+
 /* GET home page. */
 /*router.get('/', function(req, res, next) {
  res.sendfile('./public/index.html');
@@ -236,7 +239,7 @@ router.post('/taskcompleted',function(req,res,next){
 
 /* User details */
 router.post('/user_info', function (req, res){ 
-	User.findOne({"_id":req.body.user_id}, function(err, userinfo) {    
+	User.findOne({"user_name":req.body.user_name}, function(err, userinfo) {    
 	if(userinfo){
 		 res.send({status: "true", userinfo});
 
