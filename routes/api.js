@@ -25,9 +25,9 @@ router.get('/auth', authUser);
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+/*router.get('/', function(req, res, next) {
  res.sendfile('./public/index.html');
-});
+});*/
 
 
 
