@@ -11,6 +11,7 @@ var in_client_id = '5ee0174a2eb840f88cee2f37ab75d02b',
 var db_uri = 'mongodb://kavi:Strictly@ds135594.mlab.com:35594/gameapp';
 
 module.exports = {
+  port: process.env.PORT || 3000,
   db: {
     uri: db_uri
   },
