@@ -45,15 +45,16 @@ router.post('/addtask', function(req, res, next) {
 /*Insta Users*/
 router.post('/login',function(req, res, next){
 	var user = new User({
-		user_name: req.body.user_name
+		user_name: req.body.user_name,
+		img: req.body.img
 	});
 	user.save(function (err,user) {
 		if (err) return JSON.stringify(err);
 	 	//saved
 	 	if(user) {
-	 		        var token = jwt.sign(user, app.get('superSecret'), {				
-		 	        expiresIn: 86400 // expires in 24 hours //basically in seconds			
-		         });
+	 		       // var token = jwt.sign(user, app.get('superSecret'), {				
+		 	       // expiresIn: 86400 // expires in 24 hours //basically in seconds			
+		       // });
 			// res.send({"token":token});
 	 		res.send({status: "true", user});		
 		}else{
@@ -251,6 +252,8 @@ router.post('/test', function (req, res){
 		 	})  
 		    
 	})
+
+
 
 
 

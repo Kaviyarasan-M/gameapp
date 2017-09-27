@@ -7,12 +7,13 @@ module.exports = mongoose.model('User', new Schema({
 
      user_id:{
      	type : Schema.Types.ObjectId,
-		ref : 'User'
+		  ref : 'User'
      },
      user_name:{
      	type: String,
      	unique: true
      },
+     img: { data: Buffer, contentType: String }
      accepted_task:[
      {
       task_id: String,
