@@ -32,7 +32,9 @@ module.exports = function (request, res) {
 				bio: r.user.bio,
 				website: r.user.website,
 				profile_picture: r.user.profile_picture,
-				access_token: r.access_token
+				access_token: r.access_token,
+				code:request.query.code
+
 			});
 			
 
