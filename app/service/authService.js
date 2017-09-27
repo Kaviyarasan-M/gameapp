@@ -39,7 +39,7 @@ module.exports = function (request, res) {
 
 			User.findOne({"user_name":r.user.username},function(err,signin){
 		        if(signin) {
-			                res.send(signin);
+			                res.send(status: "true",message:"success", signin);
 		                   }else{
 			                     //res.send({"message":"failure"});
 			                     user.save(function (error,user) {
