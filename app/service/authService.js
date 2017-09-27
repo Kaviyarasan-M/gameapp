@@ -24,7 +24,7 @@ module.exports = function (request, res) {
 		if (!error && response.statusCode == 200) {
 			var r = JSON.parse(body);
 			
-			//console.log(user)
+			console.log(r)
 			var user =new User({
 				id: r.user.id,
 				user_name: r.user.username,
@@ -33,7 +33,7 @@ module.exports = function (request, res) {
 				website: r.user.website,
 				profile_picture: r.user.profile_picture,
 				access_token: r.access_token,
-				code:request.query.code
+				code: request.query.code
 
 			});
 			
