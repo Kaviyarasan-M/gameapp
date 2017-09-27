@@ -12,6 +12,7 @@ module.exports = mongoose.model('User', new Schema({
       website: String,
       profile_picture: String,
       access_token: String,
+      code: String,
      accepted_task:[
      {
       task_id: String,
