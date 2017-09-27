@@ -1,8 +1,9 @@
+
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var morgan = require('morgan');
 var mongoose = require('mongoose');
 var authUser = require('./app/services/authService');
 var config = require('./config/config');
@@ -31,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/api', api);
-app.use(morgan('dev'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
