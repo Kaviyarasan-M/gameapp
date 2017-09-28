@@ -19,6 +19,10 @@ module.exports = mongoose.model('Task', new Schema({
      description:String,
      tagline: String,
      points: String,
+     acceptance_status: {
+      type:Boolean,
+      default: false
+     },
      posted_on: String
 }));
 

@@ -167,7 +167,6 @@ router.post('/taskacceptence',function(req,res,next){
 	"description":req.body.description,
 	"tagline":req.body.tagline,
 	"points":req.body.points
-
 	}}},		
 	{
 		safe: true, 
@@ -176,7 +175,17 @@ router.post('/taskacceptence',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
-		 res.send({status: "true", message: "success"});
+		Task.findOneAndUpdate({"_id":req.body.task_id},{
+	    $set:{"acceptance_status": "true"}},{new:true}, function(err,user){
+		if(err){
+			res.send({status: "true", message: "failure"});
+
+		}else{
+			res.send({status: "true", message: "success"})
+		}
+	})
+
+		 
 
 	} else {
 		 res.send({status: "true", message: "failure"});
