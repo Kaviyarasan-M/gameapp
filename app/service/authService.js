@@ -25,7 +25,7 @@ module.exports = function (request, res) {
 			var r = JSON.parse(body);
 			
 			//console.log(user)
-			var user =new User({
+			var userinfo =new User({
 				id: r.user.id,
 				user_name: r.user.username,
 				full_name: r.user.full_name,
@@ -42,7 +42,7 @@ module.exports = function (request, res) {
 		        	       console.log(user)
 			                res.send({status: "true", user});
 		                   }else{
-			                     user.save(function (error,user) {
+			                     userinfo.save(function (error,user) {
 			                     	console.log(user)
 				                   if (error) res.send({status: "true", message: "failure"});
 				                   
