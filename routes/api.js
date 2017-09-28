@@ -162,6 +162,7 @@ router.post('/taskacceptence',function(req,res,next){
 	{
 	$push:{"accepted_task":{
 	"task_id":req.body.task_id,
+	"task_no":req.body.task_no,
 	"name":req.body.name,
 	"category":req.body.category,
 	"description":req.body.description,
@@ -205,6 +206,7 @@ router.post('/taskcompleted',function(req,res,next){
 	{
 	$push:{"completed_task":{
 	"task_id":req.body.task_id,
+	"task_no":req.body.task_no,
 	"name":req.body.name,
 	"category":req.body.category,
 	"description":req.body.description,
