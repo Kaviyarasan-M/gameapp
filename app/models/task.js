@@ -23,6 +23,10 @@ module.exports = mongoose.model('Task', new Schema({
       type:Boolean,
       default: false
      },
+     completed_status: {
+       type:Boolean,
+       default: false
+     },
      posted_on: String
 }));
 

@@ -218,30 +218,28 @@ router.post('/taskcompleted',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
+       User.findOneAndUpdate({"_id":req.body.user_id},		
+		{
+			$pull:{"accepted_task":{
+			"task_id":req.body.task_id}}},		
+			{safe: true, upsert: true, new : true},function (err, mod){
+			 Task.findOneAndUpdate({"_id":req.body.task_id},{
+	     $set:{"completed_status": "true"}},{new:true}, function(err,user){
+		if(err){
+			res.send({status: "true", message: "failure"});
 
-		User.findOneAndUpdate(
-				{"_id":req.body.user_id},		
-				{
-				$pull:{"accepted_task":{
-				"task_id":req.body.task_id
+		}else{
+			res.send({status: "true", message: "success"})
+		}
+	    })})	
 
-				}}},		
-				{
-					safe: true, 
-					upsert: true, new : true
-		 },function (err, mod){
-		 	 res.send({status: "true", message: "success", mod});
-		 	})
-
-		
-
-	} else {
+	    } else {
 		 res.send({status: "true", message: "failure"});
 
-	}	           
+	    }	           
 		        
-	}	
-)})
+	    }	
+    )})
 
 
 
