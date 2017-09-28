@@ -261,8 +261,8 @@ router.post('/user_info', function (req, res){
 	})
 
 
-/* User details */
-router.post('/test', function (req, res){ 
+/* User remove accepted task */
+router.post('/taskremove', function (req, res){ 
 	User.findOneAndUpdate(
 				{"_id":req.body.user_id},		
 				{
@@ -274,8 +274,12 @@ router.post('/test', function (req, res){
 					safe: true, 
 					upsert: true, new : true
 		 },function (err, mod){
-		 	 res.send({status: "true", message: "success", mod});
-		 	})  
+		 if(mod){
+		         res.send({status: "true", message: "success"});
+		 }else{
+		         res.send({status: "true", message: "failure"});
+		       }
+		 })  
 		    
 	})
 
