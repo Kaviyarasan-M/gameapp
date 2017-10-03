@@ -273,8 +273,8 @@ router.post('/taskremove', function (req, res){
 					upsert: true, new : true
 		        },function (err, mod){
 		                             if(mod){
-		                             	  
-		                                     res.send({status: "true", message: "success",mod});
+
+		                                     res.send({status: "true", message: "success"});
 		                                    }else{
 		                                     res.send({status: "true", message: "failure"});
 		                                    }
