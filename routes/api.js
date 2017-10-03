@@ -263,27 +263,30 @@ router.post('/user_info', function (req, res){
 
 /* User remove accepted task */
 router.post('/taskremove', function (req, res){ 
-	User.findOneAndUpdate(
-				{"_id":req.body.user_id},		
-				{
+	User.findOneAndUpdate({"_id":req.body.user_id},{
 				$pull:{"accepted_task":{
 				"task_id":req.body.task_id
-
 				}}},		
 				{
 					safe: true, 
 					upsert: true, new : true
-		 },function (err, mod){
-		 if(mod){
-		         res.send({status: "true", message: "success"});
-		 }else{
-		         res.send({status: "true", message: "failure"});
-		       }
-		 })  
+		        },function (err, mod){
+		                             if(mod){
+		                                     res.send({status: "true", message: "success",mod});
+		                                    }else{
+		                                     res.send({status: "true", message: "failure"});
+		                                    }
+		                             })  
 		    
 	})
 
 
+
+/* Leader Board */
+router.post('/leaderboard', function (req, res){ 
+	  
+		    
+	})
 
 
 
