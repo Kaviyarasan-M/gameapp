@@ -263,6 +263,7 @@ router.post('/user_info', function (req, res){
 
 /* User remove accepted task */
 router.post('/taskremove', function (req, res){ 
+
 	User.findOneAndUpdate({"_id":req.body.user_id},{
 				$pull:{"accepted_task":{
 				"task_id":req.body.task_id
@@ -272,6 +273,7 @@ router.post('/taskremove', function (req, res){
 					upsert: true, new : true
 		        },function (err, mod){
 		                             if(mod){
+		                             	   console.log(mod);return false;
 		                                     res.send({status: "true", message: "success",mod});
 		                                    }else{
 		                                     res.send({status: "true", message: "failure"});
