@@ -212,7 +212,7 @@ router.post('/taskacceptence',function(req,res,next){
 								if (err) return JSON.stringify(err);
 								if(model) {
 
-								res.send({"message": model});
+								res.send({status: "true", message: "success"});
 								}})
 				//res.send({status: "true", message: "success"});
 				}	
