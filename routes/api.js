@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var User = require('../app/models/user');
 var Task = require('../app/models/task');
+var Leaderboard = require('../app/models/leaderboard');
 var morgan = require('morgan');
 var config = require('../config/config');
 
@@ -144,7 +145,20 @@ router.get('/individual_tasklist', function (req, res){
 router.post('/taskdetails', function (req, res){ 
 	Task.findOne({"_id":req.body.task_id}, function(err, task) {    
 	if(task){
-		 res.send({status: "true", task});
+            Leaderboard.find({"user_id": req.body.user_id, "tasks.task_id":req.body.task_id},{ 'tasks.$': 1}, function(err, leaderboard) { 
+ 
+				if(leaderboard!=""){
+					var task_status = leaderboard[0].tasks[0].task_status; 
+					console.log(task_status)
+				res.send({status: "true", task,task_status});
+
+				}else {
+
+				res.send({status: "true", task, task_status: "pending"});
+
+				}
+				})
+
 
 	}else {
 		 res.send({status: "true", message: "failure"});
@@ -175,16 +189,34 @@ router.post('/taskacceptence',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
+			    console.log(model)
+				var leaderboard = new Leaderboard({
+					user_id: req.body.user_id
+				});
+				leaderboard.save(function (err,Asignup) {
+				if (err) return JSON.stringify(err);
+				//saved
+				if(Asignup) {
+								Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
+								{
+								$push:{"tasks":{
+								"task_id":req.body.task_id,
+								"task_name":req.body.name,
+								"task_status":"accepted",
+								"points":"0"}}},		
+								{
+								safe: true, 
+								upsert: true, new : true
+								},        
+								function(err, model) { 
+								if (err) return JSON.stringify(err);
+								if(model) {
 
-		Task.findOneAndUpdate({"_id":req.body.task_id},{
-	    $set:{"acceptance_status": "true"}},{new:true}, function(err,user){
-		if(err){
-			res.send({status: "true", message: "failure"});
-
-		}else{
-			res.send({status: "true", message: "success"})
-		}
-	})
+								res.send({"message": model});
+								}})
+				//res.send({status: "true", message: "success"});
+				}	
+				})
 
 		 
 
@@ -220,20 +252,63 @@ router.post('/taskcompleted',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
-       User.findOneAndUpdate({"_id":req.body.user_id},		
-		{
-			$pull:{"accepted_task":{
-			"task_id":req.body.task_id}}},		
-			{safe: true, upsert: true, new : true},function (err, mod){
-			 Task.findOneAndUpdate({"_id":req.body.task_id},{
-	     $set:{"completed_status": "true"}},{new:true}, function(err,user){
-		if(err){
-			res.send({status: "true", message: "failure"});
+				User.findOne({"_id":req.body.user_id}, function(err, user) {    
+				if(user){
+				User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
+				if(user){
+				User.findOneAndUpdate({"_id":req.body.user_id},{
+				$pull:{"accepted_task":{
+				"task_id":req.body.task_id
+				}}},		
+				{
+				safe: true, 
+				upsert: true, new : true
+				},function (err, mod){
+				if(mod){
+						/*Leaderboard.find({"user_id":req.body.user_id},function(err, user) { 
+						if (user){
+						res.render('/leaderboard',{user:user},function(err,favlist){
+						res.send({status:"true",user});
+						});}else{
+						res.send({status:"true",message: "User not found"});
+						}
+						})*/
 
-		}else{
-			res.send({status: "true", message: "success"})
-		}
-	    })})	
+				Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
+				 	$set:{"tasks.$.task_status": "completed", 
+				 	      "tasks.$.points": req.body.points}},{new:true}, function(err,user){
+				 	      	
+				if(user){
+					res.send({status: "true", message: "success"})
+				}else{
+					console.log(err)
+					res.send({status: "true", message: "failure"})
+				}})	
+
+				//res.send({status: "true", message: "success"});
+				}else{
+				res.send({status: "true", message: "failure"});
+				}
+				}) 
+
+				}else{
+				res.send({status: "true", message: "Task not found"});
+
+				}
+				})
+				}else{
+				res.send({status: "true", message: "User not found"});
+
+				}
+				}); 
+
+				/*Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},{
+				 	$set:{"task_status": "completed", "points": req.body.points}},{new:true}, function(err,user){
+				if(err){
+					res.send({status: "true", message: "failure"})
+				}else{
+					res.send({status: "true", message: "successs", model })
+				}})	*/
 
 	    } else {
 		 res.send({status: "true", message: "failure"});
@@ -250,7 +325,7 @@ router.post('/taskcompleted',function(req,res,next){
 router.post('/user_info', function (req, res){ 
 	User.findOne({"user_name":req.body.user_name}, function(err, user) {    
 	if(user){
-		 res.send({status: "true", user});
+		 res.send({status: "true", message: "success", user});
 
 	}else{
 		 res.send({status: "true", message: "failure"});
@@ -263,23 +338,6 @@ router.post('/user_info', function (req, res){
 
 /* User remove accepted task */
 router.post('/taskremove', function (req, res){ 
-
-	/*User.findOneAndUpdate({"_id":req.body.user_id},{
-				$pull:{"accepted_task":{
-				"task_id":req.body.task_id
-				}}},		
-				{
-					safe: true, 
-					upsert: true, new : true
-		        },function (err, mod){
-		                             if(mod){
-
-		                                     res.send({status: "true", message: "success"});
-		                                    }else{
-		                                     res.send({status: "true", message: "failure"});
-		                                    }
-		                             })  */
-
 
      User.findOne({"_id":req.body.user_id}, function(err, user) {    
 		if(user){
@@ -318,6 +376,16 @@ router.post('/taskremove', function (req, res){
 /* Leader Board */
 router.post('/leaderboard', function (req, res){ 
 
+	Leaderboard.find({"user_id":req.body.user_id},function(err, user) { 
+		if (user){
+	    /* res.render('/leaderboard',{user:user},function(err,favlist){
+			res.send({status:"true",user});
+		});*/
+		res.send({status:"true", user});
+        }else{
+			res.send({status:"true",message: "User not found"});
+		}
+	});
 	  
 		    
 	})
