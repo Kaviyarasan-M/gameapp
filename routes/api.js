@@ -189,17 +189,11 @@ router.post('/taskacceptence',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
-			    console.log(model)
-				var leaderboard = new Leaderboard({
-					user_id: req.body.user_id
-				});
-				leaderboard.save(function (err,Asignup) {
-				if (err) return JSON.stringify(err);
-				//saved
-				if(Asignup) {
-								Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
-								{
-								$push:{"tasks":{
+
+              Leaderboard.findOne({"user_id":req.body.user_id}, function(err, user) {    
+			  if(user){
+                        Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
+						{ $push:{"tasks":{
 								"task_id":req.body.task_id,
 								"task_name":req.body.name,
 								"task_status":"accepted",
@@ -214,9 +208,39 @@ router.post('/taskacceptence',function(req,res,next){
 
 								res.send({status: "true", message: "success"});
 								}})
-				//res.send({status: "true", message: "success"});
-				}	
-				})
+						
+							}else{
+							
+									var leaderboard = new Leaderboard({
+									user_id: req.body.user_id
+									});
+									leaderboard.save(function (err,Asignup) {
+									if (err) return JSON.stringify(err);
+									//saved
+									if(Asignup) {
+									Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
+									{
+									$push:{"tasks":{
+									"task_id":req.body.task_id,
+									"task_name":req.body.name,
+									"task_status":"accepted",
+									"points":"0"}}},		
+									{
+									safe: true, 
+									upsert: true, new : true
+									},        
+									function(err, model) { 
+									if (err) return JSON.stringify(err);
+									if(model) {
+
+									res.send({status: "true", message: "success"});
+									}})
+									//res.send({status: "true", message: "success"});
+									}	
+									})}
+							});
+			   
+				
 
 		 
 
@@ -351,9 +375,29 @@ router.post('/taskremove', function (req, res){
 								safe: true, 
 								upsert: true, new : true
 								},function (err, mod){
-								if(mod){
+								if(mod){      
 
-								res.send({status: "true", message: "success"});
+
+
+											Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
+											$pull:{"tasks":{
+											"task_id":req.body.task_id
+											}}},		
+											{
+											safe: true, 
+											upsert: true, new : true
+											},function (err, mod){
+											if(mod){
+
+
+											res.send({status: "true", message: "success"});
+											}else{
+											res.send({status: "true", message: "failure"});
+											}
+											}) 
+
+									
+								//res.send({status: "true", message: "success"});
 								}else{
 								res.send({status: "true", message: "failure"});
 								}
@@ -378,6 +422,7 @@ router.post('/leaderboard', function (req, res){
 
 	Leaderboard.find({"user_id":req.body.user_id},function(err, user) { 
 		if (user){
+
 	    /* res.render('/leaderboard',{user:user},function(err,favlist){
 			res.send({status:"true",user});
 		});*/
