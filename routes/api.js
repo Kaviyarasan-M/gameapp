@@ -195,7 +195,6 @@ router.post('/taskacceptence',function(req,res,next){
                         Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
 						{ $push:{"tasks":{
 								"task_id":req.body.task_id,
-								"task_name":req.body.name,
 								"task_status":"accepted",
 								"points":"0"}}},		
 								{
@@ -210,9 +209,12 @@ router.post('/taskacceptence',function(req,res,next){
 								}})
 						
 							}else{
-							
+								User.findOne({"_id":req.body.user_id},['user_name'], function(err, user) {    
+								if(user){
+
 									var leaderboard = new Leaderboard({
-									user_id: req.body.user_id
+									user_id: req.body.user_id,
+									user_name: user.user_name
 									});
 									leaderboard.save(function (err,Asignup) {
 									if (err) return JSON.stringify(err);
@@ -222,7 +224,6 @@ router.post('/taskacceptence',function(req,res,next){
 									{
 									$push:{"tasks":{
 									"task_id":req.body.task_id,
-									"task_name":req.body.name,
 									"task_status":"accepted",
 									"points":"0"}}},		
 									{
@@ -237,7 +238,17 @@ router.post('/taskacceptence',function(req,res,next){
 									}})
 									//res.send({status: "true", message: "success"});
 									}	
-									})}
+									})
+									// res.send({status: "true", message: "success", user});
+
+								}else{
+									 res.send({status: "true", message: "failure"});
+
+								}
+								})
+							
+									
+								}
 							});
 			   
 				
@@ -427,6 +438,24 @@ router.post('/leaderboard', function (req, res){
 			res.send({status:"true",user});
 		});*/
 		res.send({status:"true", user});
+        }else{
+			res.send({status:"true",message: "User not found"});
+		}
+	});
+	  
+		    
+	})
+
+/* Rank Board */
+router.get('/rank', function (req, res){ 
+
+	Leaderboard.find({},['user_name', 'tasks.points'],function(err, user) { 
+		if (user){
+
+	     res.render('/leaderboard',{user:user},function(err,favlist){
+			res.send({status:"true",user});
+		});
+		//res.send({status:"true", user});
         }else{
 			res.send({status:"true",message: "User not found"});
 		}
