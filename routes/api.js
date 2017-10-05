@@ -448,9 +448,11 @@ router.post('/leaderboard', function (req, res){
 /* Rank Board */
 router.get('/rank', function (req, res){ 
 
-	Leaderboard.find({},['user_name', 'total_points'],function(err, user) { 
-		if (user){
 
+	Leaderboard.find({},['user_name', 'total_points']).sort({total_points: -1}).exec(function(err, user){
+
+		if (user){
+         //console.log(user)
 	     res.render('/leaderboard',{user:user},function(err,favlist){
 			res.send({status:"true",user});
 		});
@@ -458,7 +460,24 @@ router.get('/rank', function (req, res){
         }else{
 			res.send({status:"true",message: "User not found"});
 		}
-	});
+
+	})
+
+
+
+	
+
+	/*Leaderboard.find({},['user_name', 'total_points'],function(err, user) { 
+		if (user){
+         console.log(user)
+	     res.render('/leaderboard',{user:user},function(err,favlist){
+			res.send({status:"true",user});
+		});
+		//res.send({status:"true", user});
+        }else{
+			res.send({status:"true",message: "User not found"});
+		}
+	});*/
 	  
 		    
 	})
