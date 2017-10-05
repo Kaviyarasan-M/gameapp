@@ -214,7 +214,8 @@ router.post('/taskacceptence',function(req,res,next){
 
 									var leaderboard = new Leaderboard({
 									user_id: req.body.user_id,
-									user_name: user.user_name
+									full_name: user.user_name,
+									total_points: "0"
 									});
 									leaderboard.save(function (err,Asignup) {
 									if (err) return JSON.stringify(err);
@@ -310,7 +311,7 @@ router.post('/taskcompleted',function(req,res,next){
 						})*/
 
 				Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
-				 	$set:{"tasks.$.task_status": "completed", 
+				 	$set:{"total_points": req.body.points,"tasks.$.task_status": "completed", 
 				 	      "tasks.$.points": req.body.points}},{new:true}, function(err,user){
 				 	      	
 				if(user){
@@ -449,7 +450,7 @@ router.post('/leaderboard', function (req, res){
 /* Rank Board */
 router.get('/rank', function (req, res){ 
 
-	Leaderboard.find({},['user_name', 'tasks.points'],function(err, user) { 
+	Leaderboard.find({},['full_name', 'total_points'],function(err, user) { 
 		if (user){
 
 	     res.render('/leaderboard',{user:user},function(err,favlist){
