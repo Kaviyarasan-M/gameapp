@@ -6,8 +6,8 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Leaderboard', new Schema({
 
      user_id: String,
-     full_name: String,
-     total_points: String, 
+     user_name: String,
+     total_points: Number, 
      tasks:[{
      task_id: String,
      task_status: String,

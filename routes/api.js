@@ -209,13 +209,13 @@ router.post('/taskacceptence',function(req,res,next){
 								}})
 						
 							}else{
-								User.findOne({"_id":req.body.user_id},['user_name'], function(err, user) {    
+								User.findOne({"_id":req.body.user_id}, function(err, user) {    
 								if(user){
 
 									var leaderboard = new Leaderboard({
 									user_id: req.body.user_id,
-									full_name: user.user_name,
-									total_points: "0"
+									user_name: user.full_name,
+									total_points: 0
 									});
 									leaderboard.save(function (err,Asignup) {
 									if (err) return JSON.stringify(err);
@@ -301,25 +301,23 @@ router.post('/taskcompleted',function(req,res,next){
 				upsert: true, new : true
 				},function (err, mod){
 				if(mod){
-						/*Leaderboard.find({"user_id":req.body.user_id},function(err, user) { 
-						if (user){
-						res.render('/leaderboard',{user:user},function(err,favlist){
-						res.send({status:"true",user});
-						});}else{
-						res.send({status:"true",message: "User not found"});
-						}
-						})*/
+						Leaderboard.findOne({"user_id":req.body.user_id},function(err, user1) { 
+						if (user1){
 
-				Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
-				 	$set:{"total_points": req.body.points,"tasks.$.task_status": "completed", 
-				 	      "tasks.$.points": req.body.points}},{new:true}, function(err,user){
+							Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
+				 				$set:{"total_points": user1.total_points + parseInt(req.body.points),"tasks.$.task_status": "completed", 
+				 	      			  "tasks.$.points": req.body.points}},{new:true}, function(err,user){
 				 	      	
-				if(user){
-					res.send({status: "true", message: "success"})
-				}else{
-					console.log(err)
-					res.send({status: "true", message: "failure"})
-				}})	
+							if(user){
+								res.send({status: "true", message: "success"})
+							}else{
+								console.log(err)
+								res.send({status: "true", message: "failure"})
+							}})	
+						}	
+						})
+                   
+				
 
 				//res.send({status: "true", message: "success"});
 				}else{
@@ -450,7 +448,7 @@ router.post('/leaderboard', function (req, res){
 /* Rank Board */
 router.get('/rank', function (req, res){ 
 
-	Leaderboard.find({},['full_name', 'total_points'],function(err, user) { 
+	Leaderboard.find({},['user_name', 'total_points'],function(err, user) { 
 		if (user){
 
 	     res.render('/leaderboard',{user:user},function(err,favlist){
