@@ -116,7 +116,7 @@ router.post('/login',function(req, res, next){
 
 /* Task list*/
 router.get('/tasklist', function (req, res){ 
-	Task.find({},['task_no','name','points'], function(err, tasks) {  
+	Task.find({}, function(err, tasks) {  
 	if(tasks){
 		 res.send({status: "true", tasks});
 
