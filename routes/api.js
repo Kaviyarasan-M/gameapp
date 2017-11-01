@@ -38,18 +38,18 @@ router.get('/auth', authUser);
 /*Add task api */
 router.post('/addtask', function(req, res, next) {
 	 var task = new Task({
-	 	task_no: req.body.task_no,
-	 	name: req.body.name,
-	 	category: req.body.category,
-	 	description: req.body.description,
-	 	tagline: req.body.tagline,
-	 	points: req.body.points,
-	 	posted_on: req.body.posted_on
+		task_no: req.body.task_no,
+		name: req.body.name,
+		category: req.body.category,
+		description: req.body.description,
+		tagline: req.body.tagline,
+		points: req.body.points,
+		posted_on: req.body.posted_on
 	 });
 	 task.save(function (err,Asignup) {
-	 	if (err) return JSON.stringify(err);
-	 	//saved
-	 	if(Asignup) {
+		if (err) return JSON.stringify(err);
+		//saved
+		if(Asignup) {
 			
 			res.send({status: "true", task});
 		}	
@@ -68,13 +68,13 @@ router.post('/login',function(req, res, next){
 	});
 	user.save(function (err,user) {
 		if (err) return JSON.stringify(err);
-	 	//saved
-	 	if(user) {
-	 		       // var token = jwt.sign(user, app.get('superSecret'), {				
-		 	       // expiresIn: 86400 // expires in 24 hours //basically in seconds			
-		       // });
+		//saved
+		if(user) {
+				   // var token = jwt.sign(user, app.get('superSecret'), {				
+				   // expiresIn: 86400 // expires in 24 hours //basically in seconds			
+			   // });
 			// res.send({"token":token});
-	 		res.send({status: "true", user});		
+			res.send({status: "true", user});		
 		}else{
 			res.send({status: "true", message: "failure"});		
 		}
@@ -114,8 +114,8 @@ router.post('/login',function(req, res, next){
 
 
 /* Task list*/
-router.get('/group_tasklist', function (req, res){ 
-	Task.find({"category":"Group"},['task_no','name','points'], function(err, tasks) {  
+router.get('/tasklist', function (req, res){ 
+	Task.find({ },['task_no','name','points'], function(err, tasks) {  
 	if(tasks){
 		 res.send({status: "true", tasks});
 
@@ -124,11 +124,11 @@ router.get('/group_tasklist', function (req, res){
 		}
 	
 		});   
-		    
+			
 	})
 
 /* Task list*/
-router.get('/individual_tasklist', function (req, res){ 
+/*router.get('/individual_tasklist', function (req, res){ 
 	Task.find({"category":"Individual"},['task_no','name','points'], function(err, tasks) {   
 	if(tasks){
 		 res.send({status: "true", tasks});
@@ -137,15 +137,15 @@ router.get('/individual_tasklist', function (req, res){
 			res.send({status: "true", message: "failure"});		
 		} 
 		});   
-		    
-	})
+			
+	})*/
 
 
 /* Task details */
 router.post('/taskdetails', function (req, res){ 
 	Task.findOne({"_id":req.body.task_id}, function(err, task) {    
 	if(task){
-            Leaderboard.find({"user_id": req.body.user_id, "tasks.task_id":req.body.task_id},{ 'tasks.$': 1}, function(err, leaderboard) { 
+			Leaderboard.find({"user_id": req.body.user_id, "tasks.task_id":req.body.task_id},{ 'tasks.$': 1}, function(err, leaderboard) { 
  
 				if(leaderboard!=""){
 					var task_status = leaderboard[0].tasks[0].task_status; 
@@ -165,7 +165,7 @@ router.post('/taskdetails', function (req, res){
 
 	}
 		});   
-		    
+			
 	})
 
 
@@ -190,9 +190,9 @@ router.post('/taskacceptence',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
-              Leaderboard.findOne({"user_id":req.body.user_id}, function(err, user) {    
+			  Leaderboard.findOne({"user_id":req.body.user_id}, function(err, user) {    
 			  if(user){
-                        Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
+						Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
 						{ $push:{"tasks":{
 								"task_id":req.body.task_id,
 								"task_status":"accepted",
@@ -260,7 +260,7 @@ router.post('/taskacceptence',function(req,res,next){
 		 res.send({status: "true", message: "failure"});
 
 	}	           
-		        
+				
 	}	
 )})
 
@@ -305,9 +305,9 @@ router.post('/taskcompleted',function(req,res,next){
 						if (user1){
 
 							Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
-				 				$set:{"total_points": user1.total_points + parseInt(req.body.points),"tasks.$.task_status": "completed", 
-				 	      			  "tasks.$.points": req.body.points}},{new:true}, function(err,user){
-				 	      	
+								$set:{"total_points": user1.total_points + parseInt(req.body.points),"tasks.$.task_status": "completed", 
+									  "tasks.$.points": req.body.points}},{new:true}, function(err,user){
+							
 							if(user){
 								res.send({status: "true", message: "success"})
 							}else{
@@ -316,7 +316,7 @@ router.post('/taskcompleted',function(req,res,next){
 							}})	
 						}	
 						})
-                   
+				   
 				
 
 				//res.send({status: "true", message: "success"});
@@ -337,20 +337,20 @@ router.post('/taskcompleted',function(req,res,next){
 				}); 
 
 				/*Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},{
-				 	$set:{"task_status": "completed", "points": req.body.points}},{new:true}, function(err,user){
+					$set:{"task_status": "completed", "points": req.body.points}},{new:true}, function(err,user){
 				if(err){
 					res.send({status: "true", message: "failure"})
 				}else{
 					res.send({status: "true", message: "successs", model })
 				}})	*/
 
-	    } else {
+		} else {
 		 res.send({status: "true", message: "failure"});
 
-	    }	           
-		        
-	    }	
-    )})
+		}	           
+				
+		}	
+	)})
 
 
 
@@ -366,14 +366,14 @@ router.post('/user_info', function (req, res){
 
 	}
 	});   
-		    
+			
 	})
 
 
 /* User remove accepted task */
 router.post('/taskremove', function (req, res){ 
 
-     User.findOne({"_id":req.body.user_id}, function(err, user) {    
+	 User.findOne({"_id":req.body.user_id}, function(err, user) {    
 		if(user){
 					User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
 					if(user){
@@ -418,12 +418,13 @@ router.post('/taskremove', function (req, res){
 
 					}
 					})
-	    }else{
+		}else{
 		 res.send({status: "true", message: "User not found"});
 
-	    }
+		}
 		});  
 	})
+
 
 
 
@@ -433,16 +434,16 @@ router.post('/leaderboard', function (req, res){
 	Leaderboard.find({"user_id":req.body.user_id},function(err, user) { 
 		if (user){
 
-	    /* res.render('/leaderboard',{user:user},function(err,favlist){
+		/* res.render('/leaderboard',{user:user},function(err,favlist){
 			res.send({status:"true",user});
 		});*/
 		res.send({status:"true", user});
-        }else{
+		}else{
 			res.send({status:"true",message: "User not found"});
 		}
 	});
 	  
-		    
+			
 	})
 
 /* Rank Board */
@@ -452,12 +453,12 @@ router.get('/rank', function (req, res){
 	Leaderboard.find({},['user_name', 'total_points']).sort({total_points: -1}).exec(function(err, user){
 
 		if (user){
-         //console.log(user)
-	     res.render('/leaderboard',{user:user},function(err,favlist){
+		 //console.log(user)
+		 res.render('/leaderboard',{user:user},function(err,favlist){
 			res.send({status:"true",user});
 		});
 		//res.send({status:"true", user});
-        }else{
+		}else{
 			res.send({status:"true",message: "User not found"});
 		}
 
@@ -469,18 +470,19 @@ router.get('/rank', function (req, res){
 
 	/*Leaderboard.find({},['user_name', 'total_points'],function(err, user) { 
 		if (user){
-         console.log(user)
-	     res.render('/leaderboard',{user:user},function(err,favlist){
+		 console.log(user)
+		 res.render('/leaderboard',{user:user},function(err,favlist){
 			res.send({status:"true",user});
 		});
 		//res.send({status:"true", user});
-        }else{
+		}else{
 			res.send({status:"true",message: "User not found"});
 		}
 	});*/
 	  
-		    
+			
 	})
+
 
 
 
