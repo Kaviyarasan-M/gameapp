@@ -113,9 +113,10 @@ router.post('/login',function(req, res, next){
 // ---------------------------------------------------------
 
 
+
 /* Task list*/
 router.get('/tasklist', function (req, res){ 
-	Task.find({ },['task_no','name','points'], function(err, tasks) {  
+	Task.find({},['task_no','name','points'], function(err, tasks) {  
 	if(tasks){
 		 res.send({status: "true", tasks});
 
@@ -127,8 +128,24 @@ router.get('/tasklist', function (req, res){
 			
 	})
 
-/* Task list*/
-/*router.get('/individual_tasklist', function (req, res){ 
+
+
+/* Group Task list*/
+router.get('/group_tasklist', function (req, res){ 
+	Task.find({"category":"Group"},['task_no','name','points'], function(err, tasks) {  
+	if(tasks){
+		 res.send({status: "true", tasks});
+
+	}else{
+			res.send({status: "true", message: "failure"});		
+		}
+	
+		});   
+			
+	})
+
+/* IndivTask list*/
+router.get('/individual_tasklist', function (req, res){ 
 	Task.find({"category":"Individual"},['task_no','name','points'], function(err, tasks) {   
 	if(tasks){
 		 res.send({status: "true", tasks});
@@ -138,7 +155,7 @@ router.get('/tasklist', function (req, res){
 		} 
 		});   
 			
-	})*/
+	})
 
 
 /* Task details */
