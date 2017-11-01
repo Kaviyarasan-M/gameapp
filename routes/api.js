@@ -159,6 +159,37 @@ router.get('/individual_tasklist', function (req, res){
 
 
 /* Task details */
+router.post('/next_task', function (req, res){ 
+
+    var task_no = parseInt(req.body.task_no) + 1;
+
+   	Task.findOne({"task_no":task_no}, function(err, task) {    
+	if(task){
+			Leaderboard.find({"user_id": req.body.user_id, "tasks.task_no":task_no},{ 'tasks.$': 1}, function(err, leaderboard) { 
+ 
+				if(leaderboard!=""){
+					var task_status = leaderboard[0].tasks[0].task_status; 
+					console.log(task_status)
+				res.send({status: "true", task,task_status});
+
+				}else {
+
+				res.send({status: "true", task, task_status: "pending"});
+
+				}
+				})
+	}else {
+		 res.send({status: "true", message: "failure"});
+
+	}
+		});   
+			
+	})
+
+
+
+
+/* Task details */
 router.post('/taskdetails', function (req, res){ 
 	Task.findOne({"_id":req.body.task_id}, function(err, task) {    
 	if(task){
