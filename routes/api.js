@@ -179,7 +179,7 @@ router.post('/next_task', function (req, res){
 				}
 				})
 	}else {
-		 res.send({status: "failure", message: "Task not found"});
+		 res.send({status: "failure", message: "No more challanges"});
 
 	}
 		});   
