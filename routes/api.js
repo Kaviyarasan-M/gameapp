@@ -121,7 +121,7 @@ router.get('/tasklist', function (req, res){
 		 res.send({status: "true", tasks});
 
 	}else{
-			res.send({status: "true", message: "failure"});		
+			res.send({status: "failure", message: "failure"});		
 		}
 	
 		});   
@@ -179,7 +179,7 @@ router.post('/next_task', function (req, res){
 				}
 				})
 	}else {
-		 res.send({status: "true", message: "failure"});
+		 res.send({status: "failure", message: "Task not found"});
 
 	}
 		});   
@@ -209,7 +209,7 @@ router.post('/taskdetails', function (req, res){
 
 
 	}else {
-		 res.send({status: "true", message: "failure"});
+		 res.send({status: "failure", message: "failure"});
 
 	}
 		});   
@@ -305,7 +305,7 @@ router.post('/taskacceptence',function(req,res,next){
 		 
 
 	} else {
-		 res.send({status: "true", message: "failure"});
+		 res.send({status: "failure", message: "failure"});
 
 	}	           
 				
@@ -369,17 +369,17 @@ router.post('/taskcompleted',function(req,res,next){
 
 				//res.send({status: "true", message: "success"});
 				}else{
-				res.send({status: "true", message: "failure"});
+				res.send({status: "failure", message: "failure"});
 				}
 				}) 
 
 				}else{
-				res.send({status: "true", message: "Task not found"});
+				res.send({status: "failure", message: "Task not found"});
 
 				}
 				})
 				}else{
-				res.send({status: "true", message: "User not found"});
+				res.send({status: "failure", message: "User not found"});
 
 				}
 				}); 
@@ -410,7 +410,7 @@ router.post('/user_info', function (req, res){
 		 res.send({status: "true", message: "success", user});
 
 	}else{
-		 res.send({status: "true", message: "failure"});
+		 res.send({status: "failure", message: "failure"});
 
 	}
 	});   
@@ -434,8 +434,6 @@ router.post('/taskremove', function (req, res){
 								upsert: true, new : true
 								},function (err, mod){
 								if(mod){      
-
-
 
 											Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
 											$pull:{"tasks":{
@@ -467,7 +465,7 @@ router.post('/taskremove', function (req, res){
 					}
 					})
 		}else{
-		 res.send({status: "true", message: "User not found"});
+		 res.send({status: "failure", message: "User not found"});
 
 		}
 		});  
@@ -487,7 +485,7 @@ router.post('/leaderboard', function (req, res){
 		});*/
 		res.send({status:"true", user});
 		}else{
-			res.send({status:"true",message: "User not found"});
+			res.send({status:"failure",message: "User not found"});
 		}
 	});
 	  
@@ -507,7 +505,7 @@ router.get('/rank', function (req, res){
 		});
 		//res.send({status:"true", user});
 		}else{
-			res.send({status:"true",message: "User not found"});
+			res.send({status:"failure",message: "User not found"});
 		}
 
 	})
