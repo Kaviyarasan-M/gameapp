@@ -497,7 +497,7 @@ router.post('/leaderboard', function (req, res){
 router.get('/rank', function (req, res){ 
 
 
-	Leaderboard.find({},['user_name', 'total_points']).sort({total_points: -1}).exec(function(err, user){
+	Leaderboard.find({},['user_name','profile_img', 'total_points']).sort({total_points: -1}).exec(function(err, user){
 
 		if (user){
 		 //console.log(user)
