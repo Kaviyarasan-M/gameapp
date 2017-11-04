@@ -263,6 +263,7 @@ router.post('/taskacceptence',function(req,res,next){
 									var leaderboard = new Leaderboard({
 									user_id: req.body.user_id,
 									user_name: user.full_name,
+									profile_img:user.profile_picture,
 									total_points: 0
 									});
 									leaderboard.save(function (err,Asignup) {
