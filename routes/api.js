@@ -435,7 +435,7 @@ router.post('/taskcompleted',function(req,res,next){
 
 /* User details */
 router.post('/user_info', function (req, res){ 
-	User.findOne({"full_name":req.body.user_name}, function(err, user) {    
+	User.findOne({"user_name":req.body.user_name}, function(err, user) {    
 	if(user){
            
         
@@ -546,24 +546,123 @@ router.get('/rank', function (req, res){
 
 /* Test */
 router.get('/test', function (req, res){ 
-Leaderboard.find({},['user_name','profile_img', 'total_points', 'rank'],function(err, user) { 
+Leaderboard.find({},['user_name','profile_img', 'total_points'],function(err, user) { 
 	
           
 
-var data = user;/*[
-    {score: 14, name:"apple"},
-    {score: 13, name:"orange"},
-    {score: 11, name:"banana"},
-    {score: 11, name:"cabbage"},
-    {score: 11, name:"bread"},
-    {score: 2,  name:"cherry"},
-    {score: 2,  name:"cheese"}
-]*/
+  var data = user;
+
+
+
+var data1 = [
+        {
+            "_id": "59d622ea817b4e0012be3b9b",
+            "user_name": "Kaviyarasan",
+            "profile_img": "",
+            "total_points": 20
+        },
+        {
+            "_id": "59fd580f734d1d63bdd1fbd0",
+            "user_name": "Manoj",
+            "profile_img": "",
+            "total_points": 20
+        },
+        {
+            "_id": "59fd5a8b734d1d63bdd1fc44",
+            "user_name": "Vino",
+            "profile_img": "",
+            "total_points": 20
+        },
+        {
+            "_id": "59fff43af36d2831457fefff",
+            "user_name": "Stone Gold",
+            "profile_img": "",
+            "total_points": 15
+        },
+        {
+            "_id": "59fff35ef36d2831457feea4",
+            "user_name": "RDA",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fff380f36d2831457feea9",
+            "user_name": "Sachin",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fd589d734d1d63bdd1fbfb",
+            "user_name": "Jagan",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fd58f2734d1d63bdd1fc04",
+            "user_name": "Yuva",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fd5956734d1d63bdd1fc17",
+            "user_name": "Neela",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fd597f734d1d63bdd1fc21",
+            "user_name": "Kopi",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fd59e0734d1d63bdd1fc2b",
+            "user_name": "Kiran",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fd5a4e734d1d63bdd1fc3a",
+            "user_name": "Madz",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fd5a68734d1d63bdd1fc3c",
+            "user_name": "Sharmi",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fff3d1f36d2831457feeec",
+            "user_name": "Anushka",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fff415f36d2831457fef91",
+            "user_name": "Rock",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59d5ed0deb1d2c1cc0117c79",
+            "user_name": "Boopathi Thangarasu",
+            "profile_img": "",
+            "total_points": 10
+        },
+        {
+            "_id": "59fda3adb36dc800121abe7e",
+            "user_name": "Santhosh",
+            "profile_img": "https://scontent.cdninstagram.com/t51.2885-19/s150x150/21480249_861643757294197_4001152852478132224_a.jpg",
+            "total_points": 0
+        }
+    ]
 
 var ranked = data.map(function(item, i) {
     if (i > 0) {
         var prevItem = data[i - 1];
-        if (prevItem.score == item.score) {
+        if (prevItem.total_points == item.total_points) {
             item.rank = prevItem.rank;
         } else {
             item.rank = i + 1;
