@@ -551,7 +551,7 @@ router.get('/rank', function (req, res){
 			});
 
 		 
-		   res.send({status:"true", data});
+		   res.send({status:"true", users: data});
 		}else{
 			res.send({status:"failure",message: "User not found"});
 		}
