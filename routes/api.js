@@ -187,6 +187,35 @@ router.post('/next_task', function (req, res){
 	})
 
 
+/* Task details */
+router.post('/prev_task', function (req, res){ 
+
+    var task_no = parseInt(req.body.task_no) - 1;
+
+   	Task.findOne({"task_no":task_no}, function(err, task) {    
+	if(task){
+			Leaderboard.find({"user_id": req.body.user_id, "tasks.task_no":task_no},{ 'tasks.$': 1}, function(err, leaderboard) { 
+ 
+				if(leaderboard!=""){
+					var task_status = leaderboard[0].tasks[0].task_status; 
+					console.log(task_status)
+				res.send({status: "true", task,task_status});
+
+				}else {
+
+				res.send({status: "true", task, task_status: "pending"});
+
+				}
+				})
+	}else {
+		 res.send({status: "failure", message: "No more challanges"});
+
+	}
+		});   
+			
+	})
+
+
 
 
 /* Task details */
@@ -406,15 +435,16 @@ router.post('/taskcompleted',function(req,res,next){
 
 /* User details */
 router.post('/user_info', function (req, res){ 
-	User.findOne({"user_name":req.body.user_name}, function(err, user) {    
+	User.findOne({"full_name":req.body.user_name}, function(err, user) {    
 	if(user){
-		 res.send({status: "true", message: "success", user});
+           
+        
+		  res.send({status: "true", message: "success", user});
 
 	}else{
 		 res.send({status: "failure", message: "failure"});
 
-	}
-	});   
+	}});   
 			
 	})
 
@@ -510,25 +540,47 @@ router.get('/rank', function (req, res){
 		}
 
 	})
-
-
-
-	
-
-	/*Leaderboard.find({},['user_name', 'total_points'],function(err, user) { 
-		if (user){
-		 console.log(user)
-		 res.render('/leaderboard',{user:user},function(err,favlist){
-			res.send({status:"true",user});
-		});
-		//res.send({status:"true", user});
-		}else{
-			res.send({status:"true",message: "User not found"});
-		}
-	});*/
-	  
 			
 	})
+
+
+/* Test */
+router.get('/test', function (req, res){ 
+Leaderboard.find({},['user_name','profile_img', 'total_points', 'rank'],function(err, user) { 
+	
+          
+
+var data = user;/*[
+    {score: 14, name:"apple"},
+    {score: 13, name:"orange"},
+    {score: 11, name:"banana"},
+    {score: 11, name:"cabbage"},
+    {score: 11, name:"bread"},
+    {score: 2,  name:"cherry"},
+    {score: 2,  name:"cheese"}
+]*/
+
+var ranked = data.map(function(item, i) {
+    if (i > 0) {
+        var prevItem = data[i - 1];
+        if (prevItem.score == item.score) {
+            item.rank = prevItem.rank;
+        } else {
+            item.rank = i + 1;
+        }
+    } else {
+        item.rank = 1;
+    }
+    
+    return item;
+});
+    res.send({ranked})
+			
+	})
+})
+
+
+
 
 
 
