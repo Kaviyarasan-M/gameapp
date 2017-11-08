@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var User = require('../app/models/user');
 var Task = require('../app/models/task');
+var Status = require('../app/models/status');
 var Leaderboard = require('../app/models/leaderboard');
 var morgan = require('morgan');
 var config = require('../config/config');
@@ -11,7 +12,6 @@ var app = express();
 var router = express.Router();
 
 var authUser = require('../app/service/authService');
-
 
 
 mongoose.connect(config.db.uri);
@@ -56,6 +56,59 @@ router.post('/addtask', function(req, res, next) {
 	 })
 });
 
+
+router.post('/tasklist', function(req, res, next){
+
+
+	Task.find({}, function(err, tasks) {  
+	if(tasks){
+		 	
+		 	 User.findOne({"user_name":req.body.user_name},function(err,user){
+		        if(user) {
+		        	      Status.findOne({"user_name":req.body.user_name},function(err, status){
+		        	      	if(status){
+		        	      		res.send({status:"true", tasks:status})
+
+		        	      	}else{
+		        	      		var statusinfo = new Status({
+                            	user_name: req.body.user_name
+                                 });
+						        statusinfo.save(function (err, task) {
+								if (err) return JSON.stringify(err);
+								//saved
+								if(task) {
+										Status.findOneAndUpdate({"user_name":req.body.user_name},		
+										{ $push:{"tasks":{$each:tasks}}},		
+												{
+												safe: true, 
+												upsert: true, new : true
+												},        
+												function(err, tasks) { 
+												if (err) return JSON.stringify(err);
+												if(tasks) {
+
+												res.send({status: "true", tasks: tasks });
+												}})
+								        }	
+							    })
+		        	      	    }
+		        	     })                   
+		        	          
+			            }else{
+			                    res.send({status:"false"})
+		                   }	
+	         })	
+
+	}else{
+			res.send({status: "failure", message: "failure"});		
+		}
+	
+		});   
+			
+
+
+
+})
 
 
 
@@ -115,7 +168,7 @@ router.post('/login',function(req, res, next){
 
 
 /* Task list*/
-router.get('/tasklist', function (req, res){ 
+router.get('/tasklistss', function (req, res){ 
 	Task.find({}, function(err, tasks) {  
 	if(tasks){
 		 res.send({status: "true", tasks});
@@ -267,6 +320,9 @@ router.post('/taskacceptence',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
+		    Status.findOneAndUpdate({"user_name": model.user_name,"tasks.task_id":req.body.task_id},{
+								$set:{"tasks.$.task_status": "accepted"}},{new:true}, function(err,user){
+
 			  Leaderboard.findOne({"user_id":req.body.user_id}, function(err, user) {    
 			  if(user){
 						Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
@@ -331,7 +387,7 @@ router.post('/taskacceptence',function(req,res,next){
 							});
 			   
 				
-
+})
 		 
 
 	} else {
@@ -366,6 +422,11 @@ router.post('/taskcompleted',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
+
+	        Status.findOneAndUpdate({"user_name": model.user_name,"tasks.task_id":req.body.task_id},{
+								$set:{"tasks.$.task_status": "accepted"}},{new:true}, function(err,user){  
+
+
 				User.findOne({"_id":req.body.user_id}, function(err, user) {    
 				if(user){
 				User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
@@ -413,6 +474,8 @@ router.post('/taskcompleted',function(req,res,next){
 
 				}
 				}); 
+
+})
 
 				/*Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},{
 					$set:{"task_status": "completed", "points": req.body.points}},{new:true}, function(err,user){
@@ -596,6 +659,52 @@ Leaderboard.find({},['user_name','profile_img', 'total_points'],function(err, us
 
 
 
+/* Task list*/
+router.post('/taskstatus', function (req, res){ 
+	
+Task.find({}, function(err, tasks) {  
+	if(tasks){
+		    var status=[];
+		    var status1=[];
+	        var tasklist = tasks.map(function(item, i) {
+			status.push(item);
+Leaderboard.find({"user_id": req.body.user_id,"tasks.task_id":item._id},['tasks.task_status'], function(err, leaderboard) { 
+			
+			if(leaderboard!=""){
+
+                    	var task_status = leaderboard[0].tasks[0].task_status;
+                    	//console.log(task_status);
+                    	item.set('task_status',task_status);
+                    	status[0].task_status=task_status;
+                    	status1.push(status)
+                    	console.log(status.length)
+
+                    	
+
+		    }else {
+					    var task_status= 'pending';	
+					    //console.log(task_status);
+					    item.set('task_status',task_status);
+					    status[0].task_status=task_status;
+					    status1.push(status)
+					    //console.log(status.length)
+
+						}
+						
+				});
+              
+           		//item.task_status="pending"
+           		
+					return status;
+			});
+		res.send({status: "true", tasklist});
+
+	    }else{
+			res.send({status: "failure", message: "failure"});		
+		}
+	
+		});   
+})
 
 
 

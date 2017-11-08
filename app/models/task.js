@@ -15,7 +15,8 @@ module.exports = mongoose.model('Task', new Schema({
      description:String,
      tagline: String,
      points: String,
-     posted_on: String
+     posted_on: String,
+     task_status: String
 }));
 
 

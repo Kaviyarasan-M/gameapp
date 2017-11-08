@@ -34,7 +34,7 @@ module.exports = mongoose.model('User', new Schema({
      	description: String,
       tagline: String,
       points: String
-      }
-	]
+      }],
+      tasks:[]
 }));
 
