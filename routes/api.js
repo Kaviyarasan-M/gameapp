@@ -320,7 +320,7 @@ router.post('/taskacceptence',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
-		    Status.findOneAndUpdate({"user_name": model.user_name,"tasks.task_id":req.body.task_id},{
+		    Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
 								$set:{"tasks.$.task_status": "accepted"}},{new:true}, function(err,user){
 
 			  Leaderboard.findOne({"user_id":req.body.user_id}, function(err, user) {    
@@ -423,11 +423,7 @@ router.post('/taskcompleted',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
-	        Status.findOneAndUpdate({"user_name": model.user_name,"tasks.task_id":req.body.task_id},{
-								$set:{"tasks.$.task_status": "completed"}},{new:true}, function(err,user){  
-
-
-				User.findOne({"_id":req.body.user_id}, function(err, user) {    
+	    	User.findOne({"_id":req.body.user_id}, function(err, user) {    
 				if(user){
 				User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
 				if(user){
@@ -475,7 +471,7 @@ router.post('/taskcompleted',function(req,res,next){
 				}
 				}); 
 
-})
+
 
 				/*Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},{
 					$set:{"task_status": "completed", "points": req.body.points}},{new:true}, function(err,user){
@@ -706,8 +702,16 @@ Leaderboard.find({"user_id": req.body.user_id,"tasks.task_id":item._id},['tasks.
 		});   
 })
 
+router.post('/test1', function (req, res){
+ Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
+								$set:{"tasks.$.task_status": "accepted"}},{new:true}, function(err,user){ 
+
+									res.send({status:"true", user})
 
 
 
+								 })
+
+})
 
 module.exports = router;
