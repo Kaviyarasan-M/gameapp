@@ -67,7 +67,7 @@ router.post('/tasklist', function(req, res, next){
 		        if(user) {
 		        	      Status.findOne({"user_name":req.body.user_name},function(err, status){
 		        	      	if(status){
-		        	      		res.send({status:"true", tasks:status})
+		        	      		res.send({status:"true", user:status})
 
 		        	      	}else{
 		        	      		var statusinfo = new Status({
@@ -87,7 +87,7 @@ router.post('/tasklist', function(req, res, next){
 												if (err) return JSON.stringify(err);
 												if(tasks) {
 
-												res.send({status: "true", tasks: tasks });
+												res.send({status: "true", user: tasks });
 												}})
 								        }	
 							    })
