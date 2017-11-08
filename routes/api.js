@@ -424,7 +424,7 @@ router.post('/taskcompleted',function(req,res,next){
 	if(model){
 
 	        Status.findOneAndUpdate({"user_name": model.user_name,"tasks.task_id":req.body.task_id},{
-								$set:{"tasks.$.task_status": "accepted"}},{new:true}, function(err,user){  
+								$set:{"tasks.$.task_status": "completed"}},{new:true}, function(err,user){  
 
 
 				User.findOne({"_id":req.body.user_id}, function(err, user) {    
