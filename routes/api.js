@@ -714,4 +714,16 @@ router.post('/test1', function (req, res){
 
 })
 
+
+router.post('/test2', function (req, res){
+ Status.findOne({"user_name": req.body.user_name,"tasks.task_status":req.body.task_status}, function(err,user){ 
+
+									res.send({status:"true", user})
+
+
+
+								 })
+
+})
+
 module.exports = router;
