@@ -423,6 +423,10 @@ router.post('/taskcompleted',function(req,res,next){
 	function(err, model) { 
 	if(model){
 
+			 Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
+								$set:{"tasks.$.task_status": "completed"}},{new:true}, function(err,user){
+
+
 	    	User.findOne({"_id":req.body.user_id}, function(err, user) {    
 				if(user){
 				User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
@@ -471,7 +475,7 @@ router.post('/taskcompleted',function(req,res,next){
 				}
 				}); 
 
-
+})
 
 				/*Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},{
 					$set:{"task_status": "completed", "points": req.body.points}},{new:true}, function(err,user){
@@ -513,6 +517,10 @@ router.post('/taskremove', function (req, res){
 
 	 User.findOne({"_id":req.body.user_id}, function(err, user) {    
 		if(user){
+
+			 Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
+								$set:{"tasks.$.task_status": "Pending"}},{new:true}, function(err,user){
+
 					User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
 					if(user){
 								User.findOneAndUpdate({"_id":req.body.user_id},{
@@ -554,6 +562,12 @@ router.post('/taskremove', function (req, res){
 
 					}
 					})
+
+
+
+      })
+
+
 		}else{
 		 res.send({status: "failure", message: "User not found"});
 
@@ -706,24 +720,32 @@ router.post('/test1', function (req, res){
  Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
 								$set:{"tasks.$.task_status": "accepted"}},{new:true}, function(err,user){ 
 
-									res.send({status:"true", user})
-
-
-
-								 })
+									res.send({status:"true", user})})
 
 })
 
 
 router.post('/test2', function (req, res){
- Status.findOne({"user_name": req.body.user_name,"tasks.task_status":req.body.task_status}, function(err,user){ 
+ Status.find({"user_name": req.body.user_name}, function(err,user){ 
 
-									res.send({status:"true", user})
+ 	if(user){
+
+ 		Status.findOne({"tasks.task_status":req.body.task_status}, function(err,tasks){
 
 
 
-								 })
+ 		})
+
+ 	}
+
+									
+
+
+
+	})
 
 })
+
+
 
 module.exports = router;
