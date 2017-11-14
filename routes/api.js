@@ -112,61 +112,6 @@ router.post('/tasklist', function(req, res, next){
 
 
 
-
-/*
-router.post('/login',function(req, res, next){
-	var user = new User({
-		user_name: req.body.user_name,
-		img: req.body.img
-	});
-	user.save(function (err,user) {
-		if (err) return JSON.stringify(err);
-		//saved
-		if(user) {
-				   // var token = jwt.sign(user, app.get('superSecret'), {				
-				   // expiresIn: 86400 // expires in 24 hours //basically in seconds			
-			   // });
-			// res.send({"token":token});
-			res.send({status: "true", user});		
-		}else{
-			res.send({status: "true", message: "failure"});		
-		}
-	})
-});
-*/
-
-// ---------------------------------------------------------// route middleware to authenticate and check token// ---------------------------------------------------------
-/*router.use(function(req, res, next) {	
-// check header or url parameters or post parameters for token
-	var token = req.body.token || req.param('token') || req.headers['token'];	
-	// decode token
-	if (token) {	
-		// verifies secret and checks exp	
-		jwt.verify(token, app.get('superSecret'), function(err, decoded) {				
-				if (err) {	
-					return res.json({ success: false, message: 'Failed to authenticate token.' });			
-				} else {		
-					// if everything is good, save to request for use in other routes	
-					req.decoded = decoded;		
-					next();		
-				}		
-		});
-	} else {		
-		// if there is no token	
-		// return an error	
-		return res.status(403).send({ 		
-			success: false, 	
-			message: 'No token provided.'		
-		});
-	}
-});
-*/
-// ---------------------------------------------------------
-// authenticated routes
-// ---------------------------------------------------------
-
-
-
 /* Task list*/
 router.get('/tasklistss', function (req, res){ 
 	Task.find({}, function(err, tasks) {  
@@ -212,7 +157,7 @@ router.get('/individual_tasklist', function (req, res){
 
 
 /* Task details */
-router.post('/next_task', function (req, res){ 
+/*router.post('/next_task', function (req, res){ 
 
     var task_no = parseInt(req.body.task_no) + 1;
 
@@ -237,11 +182,64 @@ router.post('/next_task', function (req, res){
 	}
 		});   
 			
+	})*/
+
+
+
+/* Next Task */
+router.post('/next_task', function (req, res){ 
+
+    var task_no = req.body.task_no + 1;
+
+   	Status.find({"user_name":req.body.user_name,"tasks.task_no":task_no},{ 'tasks.$': 1}, function(err, task) {    
+	if(task){
+            
+         	res.send({status:"true", task})
+	}else {
+		 res.send({status: "failure", message: "No more challanges"});
+
+	}
+		});   
+			
+	})
+
+
+/* Prev Task */
+router.post('/prev_task', function (req, res){ 
+
+    var task_no = req.body.task_no - 1;
+
+   	Status.find({"user_name":req.body.user_name,"tasks.task_no":task_no},{ 'tasks.$': 1}, function(err, task) {    
+	if(task){
+            
+         	res.send({status:"true", task})
+	}else {
+		 res.send({status: "failure", message: "No more challanges"});
+
+	}
+		});   
+			
+	})
+
+/* Task details */
+router.post('/taskdetails', function (req, res){ 
+
+   
+   	Status.find({"user_name":req.body.user_name,"tasks.task_no":req.body.task_no},{ 'tasks.$': 1}, function(err, task) {    
+	if(task){
+            
+         	res.send({status:"true", task})
+	}else {
+		 res.send({status: "failure", message: "No more challanges"});
+
+	}
+		});   
+			
 	})
 
 
 /* Task details */
-router.post('/prev_task', function (req, res){ 
+/*router.post('/prev_task', function (req, res){ 
 
     var task_no = parseInt(req.body.task_no) - 1;
 
@@ -266,13 +264,13 @@ router.post('/prev_task', function (req, res){
 	}
 		});   
 			
-	})
+	})*/
 
 
 
 
 /* Task details */
-router.post('/taskdetails', function (req, res){ 
+/*router.post('/taskdetails', function (req, res){ 
 	Task.findOne({"_id":req.body.task_id}, function(err, task) {    
 	if(task){
 			Leaderboard.find({"user_id": req.body.user_id, "tasks.task_id":req.body.task_id},{ 'tasks.$': 1}, function(err, leaderboard) { 
@@ -284,7 +282,7 @@ router.post('/taskdetails', function (req, res){
 
 				}else {
 
-				res.send({status: "true", task, task_status: "pending"});
+				res.send({status: "true", task, task_status: "Pending"});
 
 				}
 				})
@@ -296,7 +294,7 @@ router.post('/taskdetails', function (req, res){
 	}
 		});   
 			
-	})
+	})*/
 
 
 /*Accepted Task*/
@@ -727,7 +725,7 @@ router.post('/test1', function (req, res){
 
 router.post('/test2', function (req, res){
  Status.find({"user_name": req.body.user_name}, function(err,user){ 
-
+ 	
  	if(user){
 
  		Status.findOne({"tasks.task_status":req.body.task_status}, function(err,tasks){
@@ -738,11 +736,23 @@ router.post('/test2', function (req, res){
 
  	}
 
-									
-
-
-
 	})
+
+})
+
+
+router.post('/tags', function (req, res){
+
+	User.findOne({"user_name":req.body.user_name},['user_id','access_token'], function(err, user) {    
+	if(user){
+
+		  res.redirect('https://api.instagram.com/v1/users/self/media/recent/?access_token='+ user.access_token);
+
+
+	}else{
+		 res.send({status: "failure", message: "failure"});
+
+	}}); 
 
 })
 

@@ -7,7 +7,7 @@ module.exports = mongoose.model('Task', new Schema({
 
     
      task_no: {
-     	type: String,
+     	type: Number,
      	unique: true
      },
      name:String,

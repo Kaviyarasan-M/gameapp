@@ -16,7 +16,7 @@ module.exports = mongoose.model('User', new Schema({
       accepted_task:[
      {
       task_id: String,
-      task_no: String,
+      task_no: Number,
       name: String,
       category: String,
       description: String,
@@ -28,7 +28,7 @@ module.exports = mongoose.model('User', new Schema({
      completed_task:[
      {
      	task_id: String,
-      task_no: String,
+      task_no: Number,
      	name: String,
      	category: String,
      	description: String,
