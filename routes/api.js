@@ -28,11 +28,6 @@ router.get('/auth', authUser);
 
 
 
-/* GET home page. */
-/*router.get('/', function(req, res, next) {
- res.sendfile('./public/index.html');
-});*/
-
 
 
 /*Add task api */
@@ -347,26 +342,26 @@ router.post('/taskacceptence',function(req,res,next){
 								if(user){
 
 									var leaderboard = new Leaderboard({
-									user_id: req.body.user_id,
-									user_name: user.full_name,
-									profile_img:user.profile_picture,
-									total_points: 0
+										user_id: req.body.user_id,
+										user_name: user.full_name,
+										profile_img:user.profile_picture,
+										total_points: 0
 									});
+									
 									leaderboard.save(function (err,Asignup) {
 									if (err) return JSON.stringify(err);
 									//saved
 									if(Asignup) {
-									Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},		
-									{
-									$push:{"tasks":{
-									"task_id":req.body.task_id,
-									"task_status":"accepted",
-									"points":"0"}}},		
-									{
-									safe: true, 
-									upsert: true, new : true
-									},        
-									function(err, model) { 
+										Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},{
+											$push:{"tasks":{
+											"task_id":req.body.task_id,
+											"task_status":"accepted",
+											"points":"0"}}
+										},{
+										safe: true, 
+										upsert: true, new : true
+										},        
+										function(err, model) { 
 									if (err) return JSON.stringify(err);
 									if(model) {
 
@@ -524,6 +519,7 @@ router.post('/taskremove', function (req, res){
 
 					User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
 					if(user){
+
 								User.findOneAndUpdate({"_id":req.body.user_id},{
 								$pull:{"accepted_task":{
 								"task_id":req.body.task_id
@@ -533,25 +529,21 @@ router.post('/taskremove', function (req, res){
 								upsert: true, new : true
 								},function (err, mod){
 								if(mod){      
-
-											Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
-											$pull:{"tasks":{
+										Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
+										$pull:{"tasks":{
 											"task_id":req.body.task_id
-											}}},		
-											{
+										}}},		
+										{
 											safe: true, 
 											upsert: true, new : true
-											},function (err, mod){
-											if(mod){
-
-
+										},function (err, mod){
+										if(mod){
 											res.send({status: "true", message: "success"});
 											}else{
 											res.send({status: "true", message: "failure"});
 											}
 											}) 
-
-									
+						
 								//res.send({status: "true", message: "success"});
 								}else{
 								res.send({status: "true", message: "failure"});
