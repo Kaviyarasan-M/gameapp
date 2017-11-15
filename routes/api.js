@@ -526,7 +526,7 @@ router.post('/taskremove', function (req, res){
 								}}},		
 								{
 								safe: true, 
-								upsert: true, new : true
+								multi:true
 								},function (err, mod){
 								if(mod){      
 										Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
@@ -535,7 +535,7 @@ router.post('/taskremove', function (req, res){
 										}}},		
 										{
 											safe: true, 
-											upsert: true, new : true
+											multi:true
 										},function (err, mod){
 										if(mod){
 											res.send({status: "true", message: "success"});
