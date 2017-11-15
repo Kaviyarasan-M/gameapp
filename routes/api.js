@@ -191,9 +191,9 @@ router.post('/next_task', function (req, res){
 
     var task_no = req.body.task_no + 1;
 
-   	Status.find({"user_name":req.body.user_name,"tasks.task_no":task_no},{ 'tasks.$': 1}, function(err, task) {    
-	if(task){
-            
+   	Status.find({"user_name":req.body.user_name,"tasks.task_no":task_no},{ 'tasks.$': 1}, function(err, tasks) {    
+	if(tasks){
+             var task = tasks[0].tasks[0];
          	res.send({status:"true", task})
 	}else {
 		 res.send({status: "failure", message: "No more challanges"});
@@ -209,9 +209,9 @@ router.post('/prev_task', function (req, res){
 
     var task_no = req.body.task_no - 1;
 
-   	Status.find({"user_name":req.body.user_name,"tasks.task_no":task_no},{ 'tasks.$': 1}, function(err, task) {    
-	if(task){
-            
+   	Status.find({"user_name":req.body.user_name,"tasks.task_no":task_no},{ 'tasks.$': 1}, function(err, tasks) {    
+	if(tasks){
+             var task = tasks[0].tasks[0];
          	res.send({status:"true", task})
 	}else {
 		 res.send({status: "failure", message: "No more challanges"});
@@ -225,8 +225,11 @@ router.post('/prev_task', function (req, res){
 router.post('/taskdetails', function (req, res){ 
 
    
-   	Status.find({"user_name":req.body.user_name,"tasks.task_no":req.body.task_no},{ 'tasks.$': 1}, function(err, task) {    
-	if(task){
+   	Status.find({"user_name":req.body.user_name,"tasks.task_no":req.body.task_no},{ 'tasks.$': 1}, function(err, tasks) {    
+	if(tasks){
+
+		    var task = tasks[0].tasks[0];
+		 
             
          	res.send({status:"true", task})
 	}else {
