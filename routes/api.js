@@ -708,44 +708,32 @@ Leaderboard.find({"user_id": req.body.user_id,"tasks.task_id":item._id},['tasks.
 })
 
 router.post('/test1', function (req, res){
- Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
-								$set:{"tasks.$.task_status": "accepted"}},{new:true}, function(err,user){ 
 
-									res.send({status:"true", user})})
+	/*User.find({"user_name":req.body.user_name,"accepted_task.task_no":{$gt: req.body.task_no}},{'accepted_task.$': 1}, function(err, tasks) {    
+	if(tasks){
+             var task = tasks[0].accepted_task[0];
+         	res.send({status:"true", task})
+	}else {
+		 res.send({status: "failure", message: "No more challanges"});
+
+	}
+	});   */	
+
+
+	User.find({"user_name":req.body.user_name,"accepted_task.task_no": {$gt: req.body.task_no}}).sort({task_no: 1 }).limit(1).exec(function(err, tasks) {    
+	if(tasks){
+             var task = tasks[0].accepted_task[0];
+         	res.send({status:"true", task})
+	}else {
+		 res.send({status: "failure", message: "No more challanges"});
+
+	}
+	})
+
 
 })
 
 
-router.post('/test2', function (req, res){
-
-User.findOne({"_id":req.body.user_id}, function(err, user) {    
-		if(user){
-				User.findOne({"accepted_task.task_no":req.body.task_no}, function(err, user) {    
-					if(user){
-                            User.findOneAndUpdate({"_id":req.body.user_id},{
-								$pull:{"accepted_task":{
-								"task_no":req.body.task_no
-								}}},		
-								{
-									multi:true
-								},function (err, mod){
-								if (mod) {
-									res.send({status: "true", mod});
-								}	
-								else{
-								res.send({status: "true", message: "failure"});
-								}
-								}) 
-
-					}else{
-					res.send({status: "true", message: "Task not found"});
-
-					}
-					})
-
-		}
-		})		
-})
 
 
 
