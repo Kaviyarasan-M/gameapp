@@ -517,20 +517,20 @@ router.post('/taskremove', function (req, res){
 			 Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
 								$set:{"tasks.$.task_status": "Pending"}},{new:true}, function(err,user){
 
-					User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
+					User.findOne({"accepted_task.task_no":req.body.task_no}, function(err, user) {    
 					if(user){
 
 								User.findOneAndUpdate({"_id":req.body.user_id},{
 								$pull:{"accepted_task":{
-								"task_id":req.body.task_id
+								"task_no":req.body.task_no
 								}}},		
 								{
 									multi:true
 								},function (err, mod){
 								if(mod){      
-										Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
+										Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_no":req.body.task_no},{
 										$pull:{"tasks":{
-											"task_id":req.body.task_id
+											"task_no":req.body.task_no
 										}}},		
 										{
 											multi:true
@@ -717,37 +717,37 @@ router.post('/test1', function (req, res){
 
 
 router.post('/test2', function (req, res){
- Status.find({"user_name": req.body.user_name}, function(err,user){ 
- 	
- 	if(user){
 
- 		Status.findOne({"tasks.task_status":req.body.task_status}, function(err,tasks){
+User.findOne({"_id":req.body.user_id}, function(err, user) {    
+		if(user){
+				User.findOne({"accepted_task.task_no":req.body.task_no}, function(err, user) {    
+					if(user){
+                            User.findOneAndUpdate({"_id":req.body.user_id},{
+								$pull:{"accepted_task":{
+								"task_no":req.body.task_no
+								}}},		
+								{
+									multi:true
+								},function (err, mod){
+								if (mod) {
+									res.send({status: "true", mod});
+								}	
+								else{
+								res.send({status: "true", message: "failure"});
+								}
+								}) 
 
+					}else{
+					res.send({status: "true", message: "Task not found"});
 
+					}
+					})
 
- 		})
-
- 	}
-
-	})
-
+		}
+		})		
 })
 
 
-router.post('/tags', function (req, res){
-
-	User.findOne({"user_name":req.body.user_name},['user_id','access_token'], function(err, user) {    
-	if(user){
-
-		  res.redirect('https://api.instagram.com/v1/users/self/media/recent/?access_token='+ user.access_token);
-
-
-	}else{
-		 res.send({status: "failure", message: "failure"});
-
-	}}); 
-
-})
 
 
 
