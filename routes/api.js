@@ -230,8 +230,7 @@ router.post('/taskdetails', function (req, res){
 	}else {
 		 res.send({status: "failure", message: "No more challanges"});
 
-	}
-		});   
+	}});   
 			
 	})
 
@@ -709,15 +708,6 @@ Leaderboard.find({"user_id": req.body.user_id,"tasks.task_id":item._id},['tasks.
 
 router.post('/test1', function (req, res){
 
-	/*User.find({"user_name":req.body.user_name,"accepted_task.task_no":{$gt: req.body.task_no}},{'accepted_task.$': 1}, function(err, tasks) {    
-	if(tasks){
-             var task = tasks[0].accepted_task[0];
-         	res.send({status:"true", task})
-	}else {
-		 res.send({status: "failure", message: "No more challanges"});
-
-	}
-	});   */	
 
 
 	User.find({"user_name":req.body.user_name,"accepted_task.task_no": {$gt: req.body.task_no}}).sort({task_no: 1 }).limit(1).exec(function(err, tasks) {    
