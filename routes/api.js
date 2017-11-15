@@ -514,8 +514,8 @@ router.post('/taskremove', function (req, res){
 	 User.findOne({"_id":req.body.user_id}, function(err, user) {    
 		if(user){
 
-			// Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
-			//					$set:{"tasks.$.task_status": "Pending"}},{new:true}, function(err,user){
+			 Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
+								$set:{"tasks.$.task_status": "Pending"}},{new:true}, function(err,user){
 
 					User.findOne({"accepted_task.task_id":req.body.task_id}, function(err, user) {    
 					if(user){
@@ -525,8 +525,7 @@ router.post('/taskremove', function (req, res){
 								"task_id":req.body.task_id
 								}}},		
 								{
-								safe: true, 
-								multi:true
+									multi:true
 								},function (err, mod){
 								if(mod){      
 										Leaderboard.findOneAndUpdate({"user_id":req.body.user_id,"tasks.task_id":req.body.task_id},{
@@ -534,7 +533,6 @@ router.post('/taskremove', function (req, res){
 											"task_id":req.body.task_id
 										}}},		
 										{
-											safe: true, 
 											multi:true
 										},function (err, mod){
 										if(mod){
@@ -558,7 +556,7 @@ router.post('/taskremove', function (req, res){
 
 
 
-  //    })
+      })
 
 
 		}else{
