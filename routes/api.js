@@ -723,7 +723,7 @@ router.post('/my_next_task', function (req, res){
 				res.send({status: "true", task})
 			}else{
 
-				res.send({status: "true", message:"No more challanges"})
+				res.send({status: "false", message:"No more challanges"})
 
 			}
             			         	
@@ -751,7 +751,7 @@ router.post('/my_prev_task', function (req, res){
 				res.send({status: "true", task})
 			}else{
 
-				res.send({status: "true", message:"No more challanges"})
+				res.send({status: "false", message:"No more challanges"})
 
 			}
             			         	
