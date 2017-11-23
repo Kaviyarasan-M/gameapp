@@ -56,12 +56,13 @@ router.post('/addtask', function(req, res, next) {
 router.post('/tasklist', function(req, res, next){
 
 
-	User.find({}, function(err, tasks) {  
+	Task.find({}, function(err, tasks) {  
 	if(tasks){
 		 	
 		 	 User.findOne({"user_name":req.body.user_name},function(err,user){
 		        if(user) {
-		        	      Status.findOne({"user_name":req.body.user_name},function(err, status){
+		        	//status
+		        	      Task.findOne({"user_name":req.body.user_name},function(err, status){
 		        	      	if(status){
 		        	      		res.send({status:"true", user:status})
 
