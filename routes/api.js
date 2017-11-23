@@ -53,8 +53,10 @@ router.post('/addtask', function(req, res, next) {
 });
 
 
-router.post('/tasklist', function(req, res, next){
 
+
+//Tasklist api
+router.post('/tasklist', function(req, res, next){
 
 	Task.find({}, function(err, tasks) {  
 	if(tasks){
