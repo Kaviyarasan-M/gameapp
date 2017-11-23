@@ -32,7 +32,8 @@ router.get('/auth', authUser);
 
 /*Add task api */
 router.post('/addtask', function(req, res, next) {
-	 var task = new Task({
+	
+	var task = new Task({
 		task_no: req.body.task_no,
 		name: req.body.name,
 		category: req.body.category,
@@ -40,15 +41,15 @@ router.post('/addtask', function(req, res, next) {
 		tagline: req.body.tagline,
 		points: req.body.points,
 		posted_on: req.body.posted_on
-	 });
-	 task.save(function (err,Asignup) {
+	 	});
+	task.save(function (err,Asignup) {
 		if (err) return JSON.stringify(err);
 		//saved
 		if(Asignup) {
 			
 			res.send({status: "true", task});
 		}	
-	 })
+	})
 });
 
 
@@ -218,9 +219,7 @@ router.post('/prev_task', function (req, res){
 
 /* Task details */
 router.post('/taskdetails', function (req, res){ 
-
-   
-   	Status.find({"user_name":req.body.user_name,"tasks.task_no":req.body.task_no},{ 'tasks.$': 1}, function(err, tasks) {    
+	Status.find({"user_name":req.body.user_name,"tasks.task_no":req.body.task_no},{ 'tasks.$': 1}, function(err, tasks) {    
 	if(tasks){
 
 		    var task = tasks[0].tasks[0];
@@ -314,7 +313,6 @@ router.post('/taskacceptence',function(req,res,next){
 	},        
 	function(err, model) { 
 	if(model){
-
 		    Status.findOneAndUpdate({"user_name": req.body.user_name,"tasks.task_no":req.body.task_no},{
 								$set:{"tasks.$.task_status": "accepted"}},{new:true}, function(err,user){
 
@@ -379,9 +377,7 @@ router.post('/taskacceptence',function(req,res,next){
 							
 									
 								}
-							});
-			   
-				
+							});				
 })
 		 
 
