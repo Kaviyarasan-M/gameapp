@@ -108,19 +108,7 @@ router.post('/tasklist', function(req, res, next){
 
 
 
-/* Task list*/
-router.get('/tasklistss', function (req, res){ 
-	Task.find({}, function(err, tasks) {  
-	if(tasks){
-		 res.send({status: "true", tasks});
 
-	}else{
-			res.send({status: "failure", message: "failure"});		
-		}
-	
-		});   
-			
-	})
 
 
 
