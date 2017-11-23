@@ -9,6 +9,7 @@ module.exports = mongoose.model('User', new Schema({
       user_name: String,
       full_name: String,
       bio: String,
+      rank: String,
       website: String,
       profile_picture: String,
       access_token: String,

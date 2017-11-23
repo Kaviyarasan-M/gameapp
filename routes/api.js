@@ -53,8 +53,6 @@ router.post('/addtask', function(req, res, next) {
 });
 
 
-
-
 //Tasklist api
 router.post('/tasklist', function(req, res, next){
 
@@ -479,11 +477,55 @@ router.post('/taskcompleted',function(req,res,next){
 
 /* User details */
 router.post('/user_info', function (req, res){ 
-	User.findOne({"user_name":req.body.user_name}, function(err, user) {    
-	if(user){
-           
-        
-		  res.send({status: "true", message: "success", user});
+	User.findOne({"full_name":req.body.user_name}, function(err, user1) {    
+	if(user1){
+
+		  Leaderboard.find({},['user_name','profile_img', 'total_points']).sort({total_points: -1}).exec(function(err, user){
+
+		if (user){
+
+			var data = user;
+
+			var rank1 = data.map(function(item, i) {
+				
+			  if (i > 0) {
+               
+				
+				var prevItem = data[i - 1];
+				if (prevItem.total_points == item.total_points) {
+					
+				item.rank = prevItem.rank;
+				} else {
+				item.rank = i + 1;
+				}
+				} else {
+				item.rank = 1;
+			   
+			}
+			return item;
+		
+
+		
+		
+			
+
+			
+		
+			});
+
+			var ran=rank1.filter(function (person) { return person.user_name == user1.full_name });
+			//console.log(ran[0]);
+			user1.rank=ran[0].rank;
+			
+            
+            res.send({status:"true", message: "success",user:user1});
+		}else{
+			res.send({status:"failure",message: "User not found"});
+		}
+
+	})
+                  
+		 // res.send({status: "true", message: "success", user});
 
 	}else{
 		 res.send({status: "failure", message: "failure"});
