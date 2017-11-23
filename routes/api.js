@@ -61,8 +61,7 @@ router.post('/tasklist', function(req, res, next){
 		 	
 		 	 User.findOne({"user_name":req.body.user_name},function(err,user){
 		        if(user) {
-		        	//status
-		        	      Task.findOne({"user_name":req.body.user_name},function(err, status){
+		        	      Status.findOne({"user_name":req.body.user_name},function(err, status){
 		        	      	if(status){
 		        	      		res.send({status:"true", user:status})
 
