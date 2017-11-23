@@ -513,9 +513,15 @@ router.post('/user_info', function (req, res){
 		
 			});
 
+			var index = rank1.findIndex(x => x.user_name==user1.full_name);
+			//console.log(index);
+
 			var ran=rank1.filter(function (person) { return person.user_name == user1.full_name });
 			//console.log(ran[0]);
 			user1.rank=ran[0].rank;
+
+			//var pos= 1;
+			user1.position= index;
 			
             
             res.send({status:"true", message: "success",user:user1});
