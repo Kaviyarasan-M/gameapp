@@ -56,7 +56,7 @@ router.post('/addtask', function(req, res, next) {
 router.post('/tasklist', function(req, res, next){
 
 
-	Task.find({}, function(err, tasks) {  
+	User.find({}, function(err, tasks) {  
 	if(tasks){
 		 	
 		 	 User.findOne({"user_name":req.body.user_name},function(err,user){
