@@ -268,7 +268,7 @@ router.post('/taskacceptence',function(req,res,next){
 									//res.send({status: "true", message: "success"});
 									}	
 									})
-									// res.send({status: "true", message: "success", user});
+									
 
 								}else{
 									 res.send({status: "true", message: "failure"});
