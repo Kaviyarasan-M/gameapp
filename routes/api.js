@@ -369,13 +369,6 @@ router.post('/taskcompleted',function(req,res,next){
 
 })
 
-				/*Leaderboard.findOneAndUpdate({"user_id":req.body.user_id},{
-					$set:{"task_status": "completed", "points": req.body.points}},{new:true}, function(err,user){
-				if(err){
-					res.send({status: "true", message: "failure"})
-				}else{
-					res.send({status: "true", message: "successs", model })
-				}})	*/
 
 		} else {
 		 res.send({status: "true", message: "failure"});
