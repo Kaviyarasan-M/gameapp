@@ -510,14 +510,20 @@ router.post('/user_info', function (req, res){
 
 			//to filter particuler row in array	
 			var ran=rank1.filter(function (person) { return person.user_name == user1.full_name });
+
+			var indiviual_task=user1.completed_task.filter(function(person){ return person.category=="Individual"});
+
+			var group_task=user1.completed_task.filter(function(person){ return person.category=="Group"});
 			//console.log(ran[0]);
 			user1.rank=ran[0].rank;
 
 			//var pos= 1;
 			user1.position= index;
+			user1.individual= indiviual_task.length;
+			user1.group = group_task.length;
 
 		
-			res.send({status:"true", message: "success",user:user1, tas});
+			res.send({status:"true", message: "success",user:user1});
 
 			
             
@@ -812,42 +818,6 @@ router.post('/group_tasklist', function (req, res){
 			
 	})
 
-router.post('/individual_len', function(req,res){
-	User.find({"user_name": req.body.user_name, "completed_task.category":"Individual"},['completed_task'], function(err, task){
-		if(task){
-
-			if(task != ""){
-				var data = task[0].completed_task;
-				var length = data.length;
-				res.send({length});
-			}else{
-				var length = 0;
-				res.send({length})
-			}	
-		}else{
-			res.send({status:"true",message:"No task found"})
-		}
-	})
-})
-
-
-router.post('/group_len', function(req,res){
-	User.find({"user_name": req.body.user_name, "completed_task.category":"Group"},['completed_task'], function(err, task){
-		if(task){
-
-			if(task != ""){
-				var data = task[0].completed_task;
-				var length = data.length;
-				res.send({length});
-			}else{
-				var length = 0;
-				res.send({length})
-			}	
-		}else{
-			res.send({status:"true",message:"No task found"})
-		}
-	})
-})
 
 
 
