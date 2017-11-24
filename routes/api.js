@@ -99,10 +99,7 @@ router.post('/tasklist', function(req, res, next){
 			res.send({status: "failure", message: "failure"});		
 		}
 	
-		});   
-			
-
-
+		});  
 
 })
 
@@ -504,27 +501,27 @@ router.post('/user_info', function (req, res){
 			}
 			return item;
 		
-
-		
-		
-			
-
-			
-		
 			});
+
+			// To get the array position
 
 			var index = rank1.findIndex(x => x.user_name==user1.full_name);
 			//console.log(index);
 
+			//to filter particuler row in array	
 			var ran=rank1.filter(function (person) { return person.user_name == user1.full_name });
 			//console.log(ran[0]);
 			user1.rank=ran[0].rank;
 
 			//var pos= 1;
 			user1.position= index;
+
+		
+			res.send({status:"true", message: "success",user:user1, tas});
+
 			
             
-            res.send({status:"true", message: "success",user:user1});
+           
 		}else{
 			res.send({status:"failure",message: "User not found"});
 		}
@@ -797,6 +794,60 @@ router.post('/my_prev_task', function (req, res){
 })
 
 
+
+
+
+
+/* Group Task list*/
+router.post('/group_tasklist', function (req, res){ 
+	Task.find({"category":"Group"},['task_no','name','points'], function(err, tasks) {  
+	if(tasks){
+		 res.send({status: "true", tasks});
+
+	}else{
+			res.send({status: "true", message: "failure"});		
+		}
+	
+		});   
+			
+	})
+
+router.post('/individual_len', function(req,res){
+	User.find({"user_name": req.body.user_name, "completed_task.category":"Individual"},['completed_task'], function(err, task){
+		if(task){
+
+			if(task != ""){
+				var data = task[0].completed_task;
+				var length = data.length;
+				res.send({length});
+			}else{
+				var length = 0;
+				res.send({length})
+			}	
+		}else{
+			res.send({status:"true",message:"No task found"})
+		}
+	})
+})
+
+
+router.post('/group_len', function(req,res){
+	User.find({"user_name": req.body.user_name, "completed_task.category":"Group"},['completed_task'], function(err, task){
+		if(task){
+
+			if(task != ""){
+				var data = task[0].completed_task;
+				var length = data.length;
+				res.send({length});
+			}else{
+				var length = 0;
+				res.send({length})
+			}	
+		}else{
+			res.send({status:"true",message:"No task found"})
+		}
+	})
+})
 
 
 
