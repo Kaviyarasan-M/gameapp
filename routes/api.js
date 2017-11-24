@@ -637,7 +637,7 @@ Leaderboard.find({"user_id": req.body.user_id,"tasks.task_id":item._id},['tasks.
 						
 				});
               
-           		//item.task_status="pending"
+         
            		
 					return status;
 			});
