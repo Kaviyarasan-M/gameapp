@@ -442,8 +442,6 @@ router.post('/user_info', function (req, res){
 		}
 
 	})
-                  
-		 // res.send({status: "true", message: "success", user});
 
 	}else{
 		 res.send({status: "failure", message: "failure"});
