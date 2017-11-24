@@ -804,20 +804,6 @@ router.post('/my_prev_task', function (req, res){
 
 
 
-/* Group Task list*/
-router.post('/group_tasklist', function (req, res){ 
-	Task.find({"category":"Group"},['task_no','name','points'], function(err, tasks) {  
-	if(tasks){
-		 res.send({status: "true", tasks});
-
-	}else{
-			res.send({status: "true", message: "failure"});		
-		}
-	
-		});   
-			
-	})
-
 
 
 
